@@ -38,7 +38,7 @@ class BuildTest(unittest.TestCase):
         build.build(self.tmp)
         readme = (self.tmp / "README.md").read_text(encoding="utf-8")
         for heading in ("## 1. Model card", "## 2. What I attend to", "## 3. Experiments", "## 4. Inductive biases",
-                        "## 5. Training run", "## 6. Publications & patents", "## 7. Lab notebook"):
+                        "## 5. Training run", "## 6. Research, publications & talks", "## 7. Lab notebook"):
             self.assertIn(heading, readme)
 
     def test_notebook_entries_are_rendered_escaped(self):

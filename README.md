@@ -9,7 +9,7 @@
 <a href="https://www.linkedin.com/in/math-191231"><img alt="LinkedIn: math-191231" src="https://img.shields.io/badge/LinkedIn-math--191231-0A66C2?style=flat-square"></a> <a href="mailto:matheshwara13@gmail.com"><img alt="Email: say hi" src="https://img.shields.io/badge/Email-say%20hi-EA4335?style=flat-square&logo=gmail&logoColor=white"></a> <a href="https://ieeexplore.ieee.org/document/9569897"><img alt="IEEE: UCMMT 2021" src="https://img.shields.io/badge/IEEE-UCMMT%202021-00629B?style=flat-square&logo=ieee&logoColor=white"></a> <a href="https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"><img alt="Patent: 202241031906" src="https://img.shields.io/badge/Patent-202241031906-6e7781?style=flat-square"></a> <a href="#7-lab-notebook"><img alt="README: maintained by an LLM agent" src="https://img.shields.io/badge/README-maintained%20by%20an%20LLM%20agent-8250df?style=flat-square&logo=anthropic&logoColor=white"></a>
 </p>
 
-> **Abstract.** We present *matheshwara-v2026*, a human model pre-trained on electronics and signals (one IEEE paper, one patent) and fine-tuned on machine learning at the University of Maryland. It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, and retrieval pipelines that keep patient data on the machine. This README is itself an experiment: an LLM agent writes its lab notebook every week, and a grounding check rejects anything it can't trace to real activity.
+> **Abstract.** We present *matheshwara-v2026*, a human model pre-trained on electronics and signals (one IEEE paper, one patent) and fine-tuned on machine learning at the University of Maryland. It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, and retrieval pipelines that keep patient data on the machine. As a data scientist at the UMD Counseling Center Research Unit, it co-authored a campus-wide study of food access and student well-being and an APA 2026 poster comparing ChatGPT with human researchers. This README is itself an experiment: an LLM agent writes its lab notebook every week, and a grounding check rejects anything it can't trace to real activity.
 
 ## 1. Model card
 
@@ -17,6 +17,7 @@
 |:--|:--|
 | **Pre-training** | Electronics & signals: an [IEEE UCMMT 2021 paper](https://ieeexplore.ieee.org/document/9569897) on D-band (160 GHz) traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent) |
 | **Fine-tuning** | Machine learning & data science at the University of Maryland |
+| **Deployment** | Data Scientist, [UMD Counseling Center Research Unit](https://counseling.umd.edu/about-us/research-unit): campus-wide survey research on food access and student well-being, presented to the Vice President of Student Affairs and at the [Maryland Student Affairs Conference](https://msac.umd.edu/conference-program/sessions) |
 | **Specialisation** | Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models |
 | **Intended use** | AI that has to be right: healthcare, finance, safety |
 | **Out of scope** | Hallucinated medical advice. [ClinIQ](https://github.com/msenthi7/ClaudeHack) answers only from retrieved context |
@@ -136,14 +137,28 @@ The priors I bring to every AI system, each with the repo where it's applied.
 <sub>Loss spikes at each distribution shift (a new field) and recovers faster every time. The curve is illustrative;
 the checkpoints are real.</sub>
 
-## 6. Publications & patents
+## 6. Research, publications & talks
 
 - **Paper** · [Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier](https://ieeexplore.ieee.org/document/9569897)  
-  Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus · *2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT), Lancaster, UK, pp. 1–3* · DOI [10.1109/UCMMT53364.2021.9569897](https://doi.org/10.1109/UCMMT53364.2021.9569897)  
+  Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus · 2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT), Lancaster, UK, pp. 1–3 · DOI [10.1109/UCMMT53364.2021.9569897](https://doi.org/10.1109/UCMMT53364.2021.9569897)  
   <sub>Dispersion analysis of a D-band folded-waveguide slow-wave structure: a 20 GHz operating band (155–175 GHz) at an RF phase velocity of 0.244c, for 5G backhaul and inter-satellite links.</sub>
+- **Poster** · *A study of artificial intelligence usage by ChatGPT and human researchers*  
+  Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Mellacheruvu, M., & Maki, A. · American Psychological Association Annual Meeting, Washington, DC, August 2026
+- **Report** · *The University of Maryland Food Access & Student Well-being Study: 2025 campus survey*  
+  Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Kurz, A., & Maki, A. · University of Maryland Counseling Center Research Unit, 2026  
+  <sub>Campus-wide survey of food access and student well-being; findings presented to UMD leadership and student government (see presentations below).</sub>
+- **Workshop** · [Working together to build resilient programming to support financially vulnerable students](https://msac.umd.edu/conference-program/sessions)  
+  Wang, Y.-W., Bello, J. M., Watkins, B., Wachowski, C., & **Annamalai Senthilkumar, M.** · Maryland Student Affairs Conference, University of Maryland, College Park, February 2026
 - **Patent** · [Smart Wearable Device for Toddlers](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)  
-  **Matheshwara**, Yogeshwar G · *Patent No. 202241031906*  
+  **Matheshwara**, Yogeshwar G · Patent No. 202241031906  
   <sub>Flex-sensor / Velostat wearable that detects abnormal physical contact and alerts guardians in real time through a Blynk cloud app.</sub>
+
+**Presentations** <sub>Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Kurz, A., & Maki, A.</sub>
+
+- **Apr 2026** · *Interconnected factors shaping student success and well-being: What the data tell us* · UMD Counseling Center Research & Development Speaker Series
+- **Apr 2026** · *Interconnected factors shaping student success and well-being: What the data tell us* · BEACON (Building Early Alerts for Campus Outreach Needs) team, UMD
+- **Apr 2026** · *The University of Maryland Food Access & Student Well-being Study: 2025 campus survey* · UMD Graduate Student Government General Assembly
+- **Mar 2026** · *The University of Maryland Food Access & Student Well-being Study: 2025 campus survey* · UMD Vice President of Student Affairs & Council
 
 <details>
 <summary><b>BibTeX</b></summary>

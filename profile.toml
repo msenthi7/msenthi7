@@ -31,6 +31,8 @@ text = """We present *matheshwara-v2026*, a human model pre-trained on electroni
 It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, \
 a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, \
 and retrieval pipelines that keep patient data on the machine. \
+As a data scientist at the UMD Counseling Center Research Unit, it co-authored a campus-wide study of \
+food access and student well-being and an APA 2026 poster comparing ChatGPT with human researchers. \
 This README is itself an experiment: an LLM agent writes its lab notebook every week, \
 and a grounding check rejects anything it can't trace to real activity."""
 
@@ -39,6 +41,7 @@ rows = [
   ["Model",             "`matheshwara-v2026`"],
   ["Pre-training",      "Electronics & signals: an [IEEE UCMMT 2021 paper](https://ieeexplore.ieee.org/document/9569897) on D-band (160 GHz) traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)"],
   ["Fine-tuning",       "Machine learning & data science at the University of Maryland"],
+  ["Deployment",        "Data Scientist, [UMD Counseling Center Research Unit](https://counseling.umd.edu/about-us/research-unit): campus-wide survey research on food access and student well-being, presented to the Vice President of Student Affairs and at the [Maryland Student Affairs Conference](https://msac.umd.edu/conference-program/sessions)"],
   ["Specialisation",    "Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models"],
   ["Intended use",      "AI that has to be right: healthcare, finance, safety"],
   ["Out of scope",      "Hallucinated medical advice. [ClinIQ](https://github.com/msenthi7/ClaudeHack) answers only from retrieved context"],
@@ -253,6 +256,11 @@ label = "First RAG system in production on AWS"
 spike = 0.18
 
 [[checkpoints]]
+when  = 2025.75
+date  = "2025–26"
+label = "Data Scientist, UMD Counseling Center"
+
+[[checkpoints]]
 when  = 2026.17
 date  = "Mar 2026"
 label = "LLM in the loop: Fed sentiment → Vasicek SDE"
@@ -262,6 +270,11 @@ spike = 0.22
 when  = 2026.29
 date  = "Apr 2026"
 label = "ClinIQ at the Anthropic Hackathon"
+
+[[checkpoints]]
+when  = 2026.6
+date  = "Aug 2026"
+label = "APA 2026 poster: ChatGPT vs human researchers"
 
 [[checkpoints]]
 when  = 2026.8
@@ -289,9 +302,39 @@ bibtex  = """
 }"""
 
 [[publications]]
+kind    = "Poster"
+title   = "A study of artificial intelligence usage by ChatGPT and human researchers"
+authors = "Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Mellacheruvu, M., & Maki, A."
+venue   = "American Psychological Association Annual Meeting, Washington, DC, August 2026"
+
+[[publications]]
+kind    = "Report"
+title   = "The University of Maryland Food Access & Student Well-being Study: 2025 campus survey"
+authors = "Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Kurz, A., & Maki, A."
+venue   = "University of Maryland Counseling Center Research Unit, 2026"
+note    = "Campus-wide survey of food access and student well-being; findings presented to UMD leadership and student government (see presentations below)."
+
+[[publications]]
+kind    = "Workshop"
+title   = "Working together to build resilient programming to support financially vulnerable students"
+authors = "Wang, Y.-W., Bello, J. M., Watkins, B., Wachowski, C., & **Annamalai Senthilkumar, M.**"
+venue   = "Maryland Student Affairs Conference, University of Maryland, College Park, February 2026"
+url     = "https://msac.umd.edu/conference-program/sessions"
+
+[[publications]]
 kind    = "Patent"
 title   = "Smart Wearable Device for Toddlers"
 authors = "**Matheshwara**, Yogeshwar G"
 venue   = "Patent No. 202241031906"
 url     = "https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"
 note    = "Flex-sensor / Velostat wearable that detects abnormal physical contact and alerts guardians in real time through a Blynk cloud app."
+
+# ── Presentations (same author team on each) ─────────────────────────────────
+[talks]
+authors = "Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Kurz, A., & Maki, A."
+items = [
+  ["Apr 2026", "Interconnected factors shaping student success and well-being: What the data tell us", "UMD Counseling Center Research & Development Speaker Series"],
+  ["Apr 2026", "Interconnected factors shaping student success and well-being: What the data tell us", "BEACON (Building Early Alerts for Campus Outreach Needs) team, UMD"],
+  ["Apr 2026", "The University of Maryland Food Access & Student Well-being Study: 2025 campus survey", "UMD Graduate Student Government General Assembly"],
+  ["Mar 2026", "The University of Maryland Food Access & Student Well-being Study: 2025 campus survey", "UMD Vice President of Student Affairs & Council"],
+]

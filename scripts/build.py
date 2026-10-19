@@ -557,12 +557,13 @@ flowchart LR
 def render_readme(profile: dict, notebook: list[dict]) -> str:
     ident, links = profile["identity"], profile["links"]
     handle = ident["handle"]
+    by_kind = {p["kind"]: p for p in reversed(profile["publications"])}
 
     badges = " ".join([
         badge("LinkedIn", "math-191231", "0A66C2", links["linkedin"]),
         badge("Email", "say hi", "EA4335", f"mailto:{links['email']}", "gmail"),
-        badge("IEEE", "UCMMT 2021", "00629B", profile["publications"][0]["url"], "ieee"),
-        badge("Patent", "202241031906", "6e7781", profile["publications"][1]["url"]),
+        badge("IEEE", "UCMMT 2021", "00629B", by_kind["Paper"]["url"], "ieee"),
+        badge("Patent", "202241031906", "6e7781", by_kind["Patent"]["url"]),
         badge("README", "maintained by an LLM agent", "8250df", "#7-lab-notebook", "anthropic"),
     ])
 
@@ -576,9 +577,13 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
 
     pubs = []
     for p in profile["publications"]:
+        title = f"[{p['title']}]({p['url']})" if p.get("url") else f"*{p['title']}*"
         doi = f" · DOI [{p['doi']}](https://doi.org/{p['doi']})" if p.get("doi") else ""
-        pubs.append(f"- **{p['kind']}** · [{p['title']}]({p['url']})  \n"
-                    f"  {p['authors']} · *{p['venue']}*{doi}  \n  <sub>{p['note']}</sub>")
+        note = f"  \n  <sub>{p['note']}</sub>" if p.get("note") else ""
+        pubs.append(f"- **{p['kind']}** · {title}  \n  {p['authors']} · {p['venue']}{doi}{note}")
+    if talks := profile.get("talks"):
+        pubs.append(f"\n**Presentations** <sub>{talks['authors']}</sub>\n")
+        pubs += [f"- **{date}** · *{title}* · {venue}" for date, title, venue in talks["items"]]
     bibtex = "\n\n".join(p["bibtex"].strip() for p in profile["publications"] if p.get("bibtex"))
     if bibtex:
         pubs.append(f"\n<details>\n<summary><b>BibTeX</b></summary>\n\n```bibtex\n{bibtex}\n```\n\n</details>")
@@ -623,7 +628,7 @@ The priors I bring to every AI system, each with the repo where it's applied.
 <sub>Loss spikes at each distribution shift (a new field) and recovers faster every time. The curve is illustrative;
 the checkpoints are real.</sub>
 
-## 6. Publications & patents
+## 6. Research, publications & talks
 
 {chr(10).join(pubs)}
 
