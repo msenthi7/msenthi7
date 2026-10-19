@@ -6,7 +6,7 @@
 </picture>
 
 <p align="center">
-<a href="https://www.linkedin.com/in/math-191231"><img alt="LinkedIn: math-191231" src="https://img.shields.io/badge/LinkedIn-math--191231-0A66C2?style=flat-square"></a> <a href="mailto:matheshwara13@gmail.com"><img alt="Email: say hi" src="https://img.shields.io/badge/Email-say%20hi-EA4335?style=flat-square&logo=gmail&logoColor=white"></a> <a href="https://ieeexplore.ieee.org/document/9569897"><img alt="IEEE: paper" src="https://img.shields.io/badge/IEEE-paper-00629B?style=flat-square&logo=ieee&logoColor=white"></a> <a href="https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"><img alt="Patent: 202241031906" src="https://img.shields.io/badge/Patent-202241031906-6e7781?style=flat-square"></a> <a href="#7-lab-notebook"><img alt="README: maintained by an LLM agent" src="https://img.shields.io/badge/README-maintained%20by%20an%20LLM%20agent-8250df?style=flat-square&logo=anthropic&logoColor=white"></a>
+<a href="https://www.linkedin.com/in/math-191231"><img alt="LinkedIn: math-191231" src="https://img.shields.io/badge/LinkedIn-math--191231-0A66C2?style=flat-square"></a> <a href="mailto:matheshwara13@gmail.com"><img alt="Email: say hi" src="https://img.shields.io/badge/Email-say%20hi-EA4335?style=flat-square&logo=gmail&logoColor=white"></a> <a href="https://ieeexplore.ieee.org/document/9569897"><img alt="IEEE: UCMMT 2021" src="https://img.shields.io/badge/IEEE-UCMMT%202021-00629B?style=flat-square&logo=ieee&logoColor=white"></a> <a href="https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"><img alt="Patent: 202241031906" src="https://img.shields.io/badge/Patent-202241031906-6e7781?style=flat-square"></a> <a href="#7-lab-notebook"><img alt="README: maintained by an LLM agent" src="https://img.shields.io/badge/README-maintained%20by%20an%20LLM%20agent-8250df?style=flat-square&logo=anthropic&logoColor=white"></a>
 </p>
 
 > **Abstract.** We present *matheshwara-v2026*, a human model pre-trained on electronics and signals (one IEEE paper, one patent) and fine-tuned on machine learning at the University of Maryland. It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, and retrieval pipelines that keep patient data on the machine. This README is itself an experiment: an LLM agent writes its lab notebook every week, and a grounding check rejects anything it can't trace to real activity.
@@ -15,7 +15,7 @@
 
 | **Model** | `matheshwara-v2026` |
 |:--|:--|
-| **Pre-training** | Electronics & signals: an [IEEE paper](https://ieeexplore.ieee.org/document/9569897) on 160 GHz traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent) |
+| **Pre-training** | Electronics & signals: an [IEEE UCMMT 2021 paper](https://ieeexplore.ieee.org/document/9569897) on D-band (160 GHz) traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent) |
 | **Fine-tuning** | Machine learning & data science at the University of Maryland |
 | **Specialisation** | Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models |
 | **Intended use** | AI that has to be right: healthcare, finance, safety |
@@ -138,19 +138,36 @@ the checkpoints are real.</sub>
 
 ## 6. Publications & patents
 
-- **Paper** · [Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160 GHz Traveling Wave Tube Amplifier](https://ieeexplore.ieee.org/document/9569897)  
-  Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus · *IEEE*  
-  <sub>Slow-wave structure tuned for 155–175 GHz amplification, for 5G backhaul and inter-satellite links.</sub>
+- **Paper** · [Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier](https://ieeexplore.ieee.org/document/9569897)  
+  Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus · *2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT), Lancaster, UK, pp. 1–3* · DOI [10.1109/UCMMT53364.2021.9569897](https://doi.org/10.1109/UCMMT53364.2021.9569897)  
+  <sub>Dispersion analysis of a D-band folded-waveguide slow-wave structure: a 20 GHz operating band (155–175 GHz) at an RF phase velocity of 0.244c, for 5G backhaul and inter-satellite links.</sub>
 - **Patent** · [Smart Wearable Device for Toddlers](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)  
   **Matheshwara**, Yogeshwar G · *Patent No. 202241031906*  
   <sub>Flex-sensor / Velostat wearable that detects abnormal physical contact and alerts guardians in real time through a Blynk cloud app.</sub>
+
+<details>
+<summary><b>BibTeX</b></summary>
+
+```bibtex
+@inproceedings{prasath2021fwg,
+  author    = {{Surya Prasath C} and Ipsit Ray and J. Sneka and A. S. Matheshwara and Richards Joe Stanislaus},
+  title     = {Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier},
+  booktitle = {2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT)},
+  address   = {Lancaster, United Kingdom},
+  year      = {2021},
+  pages     = {1--3},
+  doi       = {10.1109/UCMMT53364.2021.9569897}
+}
+```
+
+</details>
 
 ## 7. Lab notebook
 
 Every Monday a GitHub Action reads my public activity and has Claude write this entry. It is only published if every
 repository and number in it can be traced back to that activity.
 
-_No entries yet. The agent writes its first one on the next Monday run._
+_No entries yet. The agent writes one each Monday after a week with public activity._
 
 <details>
 <summary><b>How the agent works</b></summary>

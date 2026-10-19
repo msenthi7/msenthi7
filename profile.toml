@@ -37,7 +37,7 @@ and a grounding check rejects anything it can't trace to real activity."""
 [card]
 rows = [
   ["Model",             "`matheshwara-v2026`"],
-  ["Pre-training",      "Electronics & signals: an [IEEE paper](https://ieeexplore.ieee.org/document/9569897) on 160 GHz traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)"],
+  ["Pre-training",      "Electronics & signals: an [IEEE UCMMT 2021 paper](https://ieeexplore.ieee.org/document/9569897) on D-band (160 GHz) traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)"],
   ["Fine-tuning",       "Machine learning & data science at the University of Maryland"],
   ["Specialisation",    "Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models"],
   ["Intended use",      "AI that has to be right: healthcare, finance, safety"],
@@ -226,8 +226,8 @@ evidence = "TravelGenie"
 # distribution shift (0 = none). `date` is the label shown in the legend.
 [[checkpoints]]
 when  = 2021.8
-date  = ""
-label = "IEEE paper: 160 GHz TWT amplifier"
+date  = "2021"
+label = "IEEE UCMMT paper: 160 GHz TWT amplifier"
 
 [[checkpoints]]
 when  = 2022.4
@@ -271,11 +271,22 @@ label = "Now: this profile writes its own lab notebook"
 # ── Publications ─────────────────────────────────────────────────────────────
 [[publications]]
 kind    = "Paper"
-title   = "Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160 GHz Traveling Wave Tube Amplifier"
+title   = "Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier"
 authors = "Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus"
-venue   = "IEEE"
+venue   = "2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT), Lancaster, UK, pp. 1–3"
 url     = "https://ieeexplore.ieee.org/document/9569897"
-note    = "Slow-wave structure tuned for 155–175 GHz amplification, for 5G backhaul and inter-satellite links."
+doi     = "10.1109/UCMMT53364.2021.9569897"
+note    = "Dispersion analysis of a D-band folded-waveguide slow-wave structure: a 20 GHz operating band (155–175 GHz) at an RF phase velocity of 0.244c, for 5G backhaul and inter-satellite links."
+bibtex  = """
+@inproceedings{prasath2021fwg,
+  author    = {{Surya Prasath C} and Ipsit Ray and J. Sneka and A. S. Matheshwara and Richards Joe Stanislaus},
+  title     = {Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier},
+  booktitle = {2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT)},
+  address   = {Lancaster, United Kingdom},
+  year      = {2021},
+  pages     = {1--3},
+  doi       = {10.1109/UCMMT53364.2021.9569897}
+}"""
 
 [[publications]]
 kind    = "Patent"

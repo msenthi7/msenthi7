@@ -533,7 +533,7 @@ def render_cards(profile: dict) -> str:
 
 def render_notebook(entries: list[dict], handle: str) -> str:
     if not entries:
-        return "_No entries yet. The agent writes its first one on the next Monday run._"
+        return "_No entries yet. The agent writes one each Monday after a week with public activity._"
     out = []
     for e in entries[:4]:
         repos = " ".join(f"[`{escape(r)}`]({repo_url(handle, r)})" for r in e.get("repos", []))
@@ -561,7 +561,7 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
     badges = " ".join([
         badge("LinkedIn", "math-191231", "0A66C2", links["linkedin"]),
         badge("Email", "say hi", "EA4335", f"mailto:{links['email']}", "gmail"),
-        badge("IEEE", "paper", "00629B", profile["publications"][0]["url"], "ieee"),
+        badge("IEEE", "UCMMT 2021", "00629B", profile["publications"][0]["url"], "ieee"),
         badge("Patent", "202241031906", "6e7781", profile["publications"][1]["url"]),
         badge("README", "maintained by an LLM agent", "8250df", "#7-lab-notebook", "anthropic"),
     ])
@@ -576,8 +576,12 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
 
     pubs = []
     for p in profile["publications"]:
+        doi = f" · DOI [{p['doi']}](https://doi.org/{p['doi']})" if p.get("doi") else ""
         pubs.append(f"- **{p['kind']}** · [{p['title']}]({p['url']})  \n"
-                    f"  {p['authors']} · *{p['venue']}*  \n  <sub>{p['note']}</sub>")
+                    f"  {p['authors']} · *{p['venue']}*{doi}  \n  <sub>{p['note']}</sub>")
+    bibtex = "\n\n".join(p["bibtex"].strip() for p in profile["publications"] if p.get("bibtex"))
+    if bibtex:
+        pubs.append(f"\n<details>\n<summary><b>BibTeX</b></summary>\n\n```bibtex\n{bibtex}\n```\n\n</details>")
 
     abstract = " ".join(profile["abstract"]["text"].split())
 
