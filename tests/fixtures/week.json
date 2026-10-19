@@ -1,0 +1,47 @@
+{
+  "user": "msenthi7",
+  "since": "2026-10-12",
+  "until": "2026-10-19",
+  "known_repos": [
+    "ClaudeHack",
+    "Medical-Chatbot-using-LLMs-Langchain-Pinecone-Flask-and-AWS",
+    "Quant_LLM",
+    "RAG_using_Mistral_ChromaDB",
+    "msenthi7",
+    "neetcode-submissions"
+  ],
+  "active": [
+    {
+      "repo": "ClaudeHack",
+      "description": "",
+      "language": "Python",
+      "commit_count": 3,
+      "commit_messages": [
+        "Add audit trail for prescription checks",
+        "Cache KB retrieval per patient",
+        "Fix vitals table sort"
+      ]
+    },
+    {
+      "repo": "neetcode-submissions",
+      "description": "My NeetCode.io problem submissions",
+      "language": "Python",
+      "commit_count": 12,
+      "commit_messages": [
+        "Add submission for two-integer-sum",
+        "Add submission for binary-search"
+      ]
+    }
+  ],
+  "starred": [
+    {
+      "repo": "anthropics/claude-cookbooks",
+      "description": "A collection of notebooks/recipes showcasing ways of using Claude."
+    }
+  ],
+  "totals": {
+    "commits": 15,
+    "repos": 2,
+    "stars": 1
+  }
+}

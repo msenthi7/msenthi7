@@ -1,0 +1,286 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Single source of truth for the profile.
+#
+#   edit this file  →  python scripts/build.py  →  README.md + assets/*.svg
+#
+# Every fact below is taken from a public repo on github.com/msenthi7.
+# Values in model_card / biases / projects may contain Markdown or inline HTML.
+# ─────────────────────────────────────────────────────────────────────────────
+
+[identity]
+name     = "Matheshwara Annamalai Senthilkumar"
+short    = "Matheshwara"
+handle   = "msenthi7"
+model_id = "matheshwara-v2026"
+
+[links]
+linkedin = "https://www.linkedin.com/in/math-191231"
+email    = "matheshwara13@gmail.com"
+
+# The hero animation "decodes" this answer token by token.
+# {chosen|runner-up|third} marks a token the model visibly samples: the
+# first option is emitted, the others are shown as lower-probability candidates.
+[hero]
+prompt = "who is msenthi7?"
+answer = "Hi, I'm Matheshwara, an {ML|AI|applied-ML} engineer who {builds|ships|designs} {grounded|reliable|auditable} LLM systems: {clinical|medical|patient} triage with strict RAG, {Fed-sentiment|LLM-scored|stochastic} risk models, and agents that {retrieve|verify|cite} before they speak."
+
+# Shown under the hero, written like a paper abstract.
+[abstract]
+text = """We present *matheshwara-v2026*, a human model pre-trained on electronics and signals \
+(one IEEE paper, one patent) and fine-tuned on machine learning at the University of Maryland. \
+It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, \
+a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, \
+and retrieval pipelines that keep patient data on the machine. \
+This README is itself an experiment: an LLM agent writes its lab notebook every week, \
+and a grounding check rejects anything it can't trace to real activity."""
+
+[card]
+rows = [
+  ["Model",             "`matheshwara-v2026`"],
+  ["Pre-training",      "Electronics & signals: an [IEEE paper](https://ieeexplore.ieee.org/document/9569897) on 160 GHz traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)"],
+  ["Fine-tuning",       "Machine learning & data science at the University of Maryland"],
+  ["Specialisation",    "Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models"],
+  ["Intended use",      "AI that has to be right: healthcare, finance, safety"],
+  ["Out of scope",      "Hallucinated medical advice. [ClinIQ](https://github.com/msenthi7/ClaudeHack) answers only from retrieved context"],
+  ["Eval highlights",   "R² 0.918 on EV range · MAD 1.279 on book ratings · 1,000-path Monte Carlo VaR / CVaR"],
+  ["Known limitations", "Overfits to hard problems. Will refactor your notebook into a pipeline."],
+  ["Status",            "Open to ML / AI engineering roles and research collaborations"],
+]
+
+# ── Attention map ────────────────────────────────────────────────────────────
+# Rows (queries) are domains, columns (keys) are methods. Each cell is a
+# row-wise softmax over how many projects in that domain use that method,
+# so the heatmap is computed from the `uses` tags on the projects below.
+[attention]
+temperature = 1.0
+domains = ["Clinical AI", "Quant finance", "Agentic tools", "Applied ML"]
+keys = [
+  ["retrieval",  "Retrieval / RAG"],
+  ["llm_api",    "LLM APIs"],
+  ["local_llm",  "Local LLMs"],
+  ["agents",     "Agents / MCP"],
+  ["guardrails", "Guardrails"],
+  ["stochastic", "Stochastic sim"],
+  ["classical",  "Classical ML"],
+  ["mlops",      "MLOps / cloud"],
+  ["data_eng",   "Data pipelines"],
+]
+
+# ── Experiments ──────────────────────────────────────────────────────────────
+# `featured` projects become cards; the rest go under "more runs".
+# Run ids (exp-01, exp-02, …) are assigned in `date` order by the build.
+
+[[projects]]
+name     = "ClinIQ"
+repo     = "ClaudeHack"
+date     = "2026-04"
+domain   = "Clinical AI"
+featured = true
+question = "Can a local LLM help an under-resourced clinic triage patients without inventing medical facts?"
+method   = "Transparent rule-based severity score → llama3.1 (Ollama) clinical and plain-language summaries → strict RAG over ChromaDB (Gale Encyclopedia + openFDA labels) → 3-step prescription-safety check"
+result   = "Built for the Anthropic Hackathon (Health & Wellbeing). Chat answers only from retrieved chunks; AI features disable themselves if the knowledge base is missing"
+uses     = ["retrieval", "local_llm", "guardrails", "agents", "data_eng"]
+
+[[projects]]
+name     = "Sentimental Liquidity"
+repo     = "Quant_LLM"
+date     = "2026-03"
+domain   = "Quant finance"
+featured = true
+question = "Can central-bank language move a stochastic rate model without letting the LLM become the model?"
+method   = "Claude scores FOMC text for hawkishness (1–10) → bounded multiplier on the Vasicek mean-reversion speed → 1,000 Monte Carlo rate paths → logistic deposit-attrition model on 100k synthetic customers"
+result   = "Net-interest-margin distribution with 90 / 95 / 99 % VaR and CVaR on a synthetic $10B deposit book"
+uses     = ["llm_api", "stochastic", "classical", "guardrails"]
+
+[[projects]]
+name     = "TravelGenie"
+repo     = "TravelGenie"
+date     = "2026-03"
+domain   = "Agentic tools"
+featured = true
+question = "Can one model coordinate many specialist tools to plan a whole trip from a single request?"
+method   = "Claude orchestrates 7 MCP servers (flights, hotels, events, geocoding, weather, FX, traffic) behind Streamlit and Slack front ends"
+result   = "One prompt → day-by-day itinerary with a budget breakdown (team project)"
+uses     = ["agents", "llm_api", "data_eng"]
+
+[[projects]]
+name     = "Local Medical RAG"
+repo     = "RAG_using_Mistral_ChromaDB"
+date     = "2025-08"
+domain   = "Clinical AI"
+featured = true
+question = "Can a medical Q&A bot be useful while patient data never leaves the machine?"
+method   = "Ollama + Chroma + HuggingFace embeddings; intent routing for off-topic queries, a retrieval relevance threshold, stateful follow-ups; Dockerised"
+result   = "Fully local pipeline: no third-party calls for protected health information"
+uses     = ["retrieval", "local_llm", "guardrails", "mlops"]
+
+[[projects]]
+name     = "Medical Chatbot on AWS"
+repo     = "Medical-Chatbot-using-LLMs-Langchain-Pinecone-Flask-and-AWS"
+date     = "2025-08"
+domain   = "Clinical AI"
+featured = true
+question = "What does it take to run a RAG chatbot in production, not just in a notebook?"
+method   = "LangChain + Pinecone + GPT behind Flask; Docker image built by GitHub Actions, pushed to ECR and deployed to EC2"
+result   = "Commit-to-container CI/CD path with conversation memory and LangSmith monitoring hooks"
+uses     = ["retrieval", "llm_api", "mlops"]
+
+[[projects]]
+name     = "Watt's Next?"
+repo     = "Predicting-EV-Trends-and-Charging-Needs"
+date     = "2025-08"
+domain   = "Applied ML"
+featured = true
+question = "How far will the next EV go, and where should the chargers go?"
+method   = "216,772 Washington-state EV records: range regression, SMOTE-balanced incentive classification, clustering and geospatial analysis (co-authored)"
+result   = "R² = 0.918 on electric-range prediction"
+uses     = ["classical", "data_eng"]
+
+[[projects]]
+name     = "Item-Item Collaborative Filtering"
+repo     = "Item-Item-Collaborative-Filterning"
+date     = "2025-05"
+domain   = "Applied ML"
+featured = true
+question = "How many neighbours does a book recommender actually need?"
+method   = "Cosine-similarity KNN on a sparse item × user matrix, sweeping neighbourhood size and training ratio, global-mean cold-start fallback"
+result   = "Best MAD 1.279 at k = 15; ratio sweep peaks at 0.85"
+uses     = ["classical"]
+
+[[projects]]
+name     = "This profile"
+repo     = "msenthi7"
+date     = "2026-10"
+domain   = "Agentic tools"
+featured = true
+question = "Can an LLM agent keep this README current without hallucinating?"
+method   = "Weekly GitHub Action: public activity → Claude (structured JSON) → grounding check on every repo name and number → one repair round → deterministic fallback"
+result   = "Every published entry is traceable to the week's activity; figures are rendered from this repo's profile.toml"
+uses     = ["llm_api", "agents", "guardrails", "mlops"]
+
+[[projects]]
+name     = "Bitcoin streaming"
+repo     = "BITCOIN_ANALYSIS_USING_STREAMZ"
+date     = "2025-08"
+domain   = "Quant finance"
+summary  = "Reactive price ingestion with Streamz; CoinGecko primary, CryptoCompare fallback, exponential backoff"
+uses     = ["data_eng"]
+
+[[projects]]
+name     = "Life-expectancy modelling"
+repo     = "LifeExpectancy-Analysis"
+date     = "2024-12"
+domain   = "Applied ML"
+summary  = "Interaction-term regression on Gapminder with an F-test and residual diagnostics"
+uses     = ["classical"]
+
+[[projects]]
+name     = "Solar Flare Reporter"
+repo     = "Solar-Flare-Reporter"
+date     = "2024-10"
+domain   = "Applied ML"
+summary  = "Selenium scraper and analysis of NASA's top-50 solar flares"
+uses     = ["data_eng"]
+
+[[projects]]
+name     = "Webpdf Scraper"
+repo     = "Webpdf-Scraper"
+date     = "2024-09"
+domain   = "Applied ML"
+summary  = "Crawls a site and extracts every linked PDF and PPT document"
+uses     = ["data_eng"]
+
+# ── Inductive biases: the priors behind every system above ───────────────────
+[[biases]]
+prior    = "Ground, then generate"
+practice = "Retrieve first and answer only from what was retrieved. ClinIQ's system prompt forbids outside knowledge for medical answers."
+evidence = "ClaudeHack"
+
+[[biases]]
+prior    = "The LLM is a sensor, not the model"
+practice = "Claude returns one bounded score from Fed language; it shifts the Vasicek mean-reversion speed by −40 % to +50 %, and the SDE, Monte Carlo and VaR stay deterministic and auditable."
+evidence = "Quant_LLM"
+
+[[biases]]
+prior    = "Deterministic core, generative surface"
+practice = "Patients are ranked by a transparent point-based severity score; the LLM writes the summaries, never the ranking."
+evidence = "ClaudeHack"
+
+[[biases]]
+prior    = "Fail closed"
+practice = "Every structured LLM call is parsed with fallback defaults; this profile's agent retries once, then falls back to a summary it can't get wrong."
+evidence = "msenthi7"
+
+[[biases]]
+prior    = "Sensitive data stays local"
+practice = "Medical Q&A runs on Ollama + Chroma on the machine, so protected health information never reaches a third party."
+evidence = "RAG_using_Mistral_ChromaDB"
+
+[[biases]]
+prior    = "Specialists over a monolith"
+practice = "One orchestrating model, seven MCP servers, each owning exactly one job."
+evidence = "TravelGenie"
+
+# ── Training run: checkpoints plotted on the loss curve ──────────────────────
+# `when` is a decimal year used for placement; `spike` is the loss jump at a
+# distribution shift (0 = none). `date` is the label shown in the legend.
+[[checkpoints]]
+when  = 2021.8
+date  = ""
+label = "IEEE paper: 160 GHz TWT amplifier"
+
+[[checkpoints]]
+when  = 2022.4
+date  = "2022"
+label = "Patent: IoT wearable for toddler safety"
+
+[[checkpoints]]
+when  = 2024.67
+date  = "Sep 2024"
+label = "Distribution shift: electronics → ML at UMD"
+spike = 0.75
+note  = "distribution shift: electronics → ML"
+
+[[checkpoints]]
+when  = 2025.38
+date  = "May 2025"
+label = "Recommenders: item-item CF, MAD 1.279"
+
+[[checkpoints]]
+when  = 2025.6
+date  = "Aug 2025"
+label = "First RAG system in production on AWS"
+spike = 0.18
+
+[[checkpoints]]
+when  = 2026.17
+date  = "Mar 2026"
+label = "LLM in the loop: Fed sentiment → Vasicek SDE"
+spike = 0.22
+
+[[checkpoints]]
+when  = 2026.29
+date  = "Apr 2026"
+label = "ClinIQ at the Anthropic Hackathon"
+
+[[checkpoints]]
+when  = 2026.8
+date  = "Oct 2026"
+label = "Now: this profile writes its own lab notebook"
+
+# ── Publications ─────────────────────────────────────────────────────────────
+[[publications]]
+kind    = "Paper"
+title   = "Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160 GHz Traveling Wave Tube Amplifier"
+authors = "Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus"
+venue   = "IEEE"
+url     = "https://ieeexplore.ieee.org/document/9569897"
+note    = "Slow-wave structure tuned for 155–175 GHz amplification, for 5G backhaul and inter-satellite links."
+
+[[publications]]
+kind    = "Patent"
+title   = "Smart Wearable Device for Toddlers"
+authors = "**Matheshwara**, Yogeshwar G"
+venue   = "Patent No. 202241031906"
+url     = "https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"
+note    = "Flex-sensor / Velostat wearable that detects abnormal physical contact and alerts guardians in real time through a Blynk cloud app."
