@@ -52,6 +52,29 @@ class BuildTest(unittest.TestCase):
         self.assertNotIn("<script>", readme)
 
 
+class PlaygroundDataTest(unittest.TestCase):
+    def setUp(self):
+        self.data = build.site_data(PROFILE)
+
+    def test_every_prompt_has_sampled_slots_with_ranked_probabilities(self):
+        for prompt in self.data["prompts"]:
+            slots = [t for t in prompt["tokens"] if "options" in t]
+            self.assertTrue(slots, prompt["prompt"])
+            for slot in slots:
+                probs = [p for _, p in slot["options"]]
+                self.assertEqual(probs, sorted(probs, reverse=True))
+
+    def test_attention_evidence_matches_counts(self):
+        att = self.data["attention"]
+        for i, row in enumerate(att["counts"]):
+            for j, n in enumerate(row):
+                self.assertEqual(len(att["evidence"].get(f"{i},{j}", [])), n)
+
+    def test_markdown_is_escaped_before_it_becomes_html(self):
+        self.assertEqual(build.md_html("<b>x</b> **y** [z](https://e.com)"),
+                         '&lt;b&gt;x&lt;/b&gt; <strong>y</strong> <a href="https://e.com">z</a>')
+
+
 class AttentionTest(unittest.TestCase):
     def test_rows_are_probability_distributions(self):
         _, _, matrix, _ = build.attention_matrix(PROFILE)

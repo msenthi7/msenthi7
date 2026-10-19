@@ -14,8 +14,9 @@ handle   = "msenthi7"
 model_id = "matheshwara-v2026"
 
 [links]
-linkedin = "https://www.linkedin.com/in/math-191231"
-email    = "matheshwara13@gmail.com"
+linkedin   = "https://www.linkedin.com/in/math-191231"
+email      = "matheshwara13@gmail.com"
+playground = "https://msenthi7.github.io/msenthi7/"
 
 # The hero animation "decodes" this answer token by token.
 # {chosen|runner-up|third} marks a token the model visibly samples: the
@@ -23,6 +24,20 @@ email    = "matheshwara13@gmail.com"
 [hero]
 prompt = "who is msenthi7?"
 answer = "Hi, I'm Matheshwara, an {ML|AI|applied-ML} engineer who {builds|ships|designs} {grounded|reliable|auditable} LLM systems: {clinical|medical|patient} triage with strict RAG, {Fed-sentiment|LLM-scored|stochastic} risk models, and agents that {retrieve|verify|cite} before they speak."
+
+# Extra prompts for the interactive playground (docs/index.html). Same {a|b|c}
+# syntax; every candidate must be true, because visitors can sample any of them.
+[[playground.prompts]]
+prompt = "what has msenthi7 built?"
+answer = "ClinIQ, a {grounded|local-LLM|RAG-backed} triage assistant for under-resourced clinics, built at the Anthropic Hackathon; Sentimental Liquidity, where Claude {scores|reads|grades} Fed statements to steer a Vasicek rate model; and medical RAG that keeps patient data {on the machine|local|private}."
+
+[[playground.prompts]]
+prompt = "what research has msenthi7 done?"
+answer = "An IEEE paper on {160 GHz|D-band|millimetre-wave} traveling-wave-tube amplifiers, a patented IoT wearable for toddler safety, and, as a data scientist at the UMD Counseling Center, a {campus-wide|2025} study of food access and student well-being plus an APA 2026 poster comparing {ChatGPT|AI} with human researchers."
+
+[[playground.prompts]]
+prompt = "is msenthi7 open to work?"
+answer = "Yes: {ML|AI|applied-ML} engineering roles and research collaborations, especially where AI {has to be right|must be grounded|is high-stakes}: healthcare, finance and safety."
 
 # Shown under the hero, written like a paper abstract.
 [abstract]

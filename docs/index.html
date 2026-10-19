@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matheshwara-v2026 · Playground</title>
+<meta name="description" content="Interactive companion to github.com/msenthi7: sample the intro at any temperature, query the profile with in-browser retrieval, re-run the attention softmax and re-smooth the training curve.">
+<style>
+:root {
+  --bg: #ffffff; --panel: #f6f8fa; --border: #d0d7de; --faint: #eaeef2;
+  --text: #1f2328; --muted: #656d76; --accent: #8250df; --accent2: #0969da;
+  --green: #1a7f37; --string: #0a3069; --on-accent: #ffffff; --mark: #fff8c5;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d; --faint: #21262d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #d2a8ff; --accent2: #79c0ff;
+    --green: #7ee787; --string: #a5d6ff; --on-accent: #0d1117; --mark: #5a4a00;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1117; --panel: #161b22; --border: #30363d; --faint: #21262d;
+  --text: #e6edf3; --muted: #8b949e; --accent: #d2a8ff; --accent2: #79c0ff;
+  --green: #7ee787; --string: #a5d6ff; --on-accent: #0d1117; --mark: #5a4a00;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 var(--sans); }
+a { color: var(--accent2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, .mono { font-family: var(--mono); }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+header.top { border-bottom: 1px solid var(--border); }
+header.top .wrap { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 14px; padding-bottom: 14px; }
+.brand { font-family: var(--mono); font-size: 14px; color: var(--muted); }
+.brand b { color: var(--text); }
+.nav { margin-left: auto; display: flex; gap: 14px; align-items: center; font-size: 14px; flex-wrap: wrap; }
+.icon-btn { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 13px; }
+
+.intro { padding: 40px 0 8px; }
+.intro h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin: 0 0 6px; letter-spacing: -0.01em; }
+.intro .model { font-family: var(--mono); color: var(--accent); font-size: 15px; margin: 0 0 18px; }
+.intro .abstract { color: var(--muted); max-width: 760px; margin: 0; }
+.intro .abstract strong { color: var(--text); }
+
+section { padding-top: 56px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--accent); margin: 0 0 4px; text-transform: uppercase; }
+h2 { font-size: 24px; margin: 0 0 8px; line-height: 1.25; }
+.lede { color: var(--muted); max-width: 760px; margin: 0 0 20px; }
+
+.panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 0 0 14px; }
+.chip { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px; cursor: pointer; font-size: 13px; line-height: 1.6; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.slider { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); }
+.slider input { accent-color: var(--accent); width: 160px; }
+.slider output { font-family: var(--mono); color: var(--text); min-width: 3.5ch; }
+.btn { background: var(--accent); color: var(--on-accent); border: 0; border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 600; font-size: 14px; }
+
+/* 1 · inference */
+.gen { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 16px; }
+.term { background: var(--bg); overflow: hidden; }
+.term .bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; background: var(--panel); border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.term .bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.term .bar span { margin-left: auto; }
+.term .body { padding: 18px 20px 16px; font-family: var(--mono); min-height: 260px; }
+.prompt-line { font-size: 14px; margin: 0 0 16px; word-break: break-word; }
+.prompt-line .p { color: var(--green); }
+.prompt-line .s { color: var(--string); }
+.prompt-line .n { color: var(--accent); }
+#out { font-size: 18px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; min-height: 5.25em; }
+.tok { border-radius: 4px; animation: tokin .6s ease-out; }
+.tok.sampled { color: var(--accent); font-weight: 600; cursor: help; text-decoration: underline dotted; text-underline-offset: 4px; }
+.tok.sampled.alt { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+@keyframes tokin { from { background: color-mix(in srgb, var(--accent2) 45%, transparent); } to { background: transparent; } }
+.thinking { color: var(--muted); font-style: italic; font-size: 15px; }
+.cursor { display: inline-block; width: .55em; height: 1.05em; background: var(--accent); vertical-align: -0.15em; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+#stats { font-size: 12.5px; color: var(--muted); margin-top: 14px; min-height: 1.5em; }
+#stats .ok { color: var(--green); }
+.dist { padding: 16px; }
+.dist h3 { font-size: 13px; font-family: var(--mono); color: var(--muted); font-weight: 400; margin: 0 0 12px; }
+.dist-row { display: grid; grid-template-columns: minmax(0, 1fr) 90px 3.2ch; gap: 10px; align-items: center; font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 3px 0; }
+.dist-row .w { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dist-row.picked { color: var(--accent); font-weight: 600; }
+.dist-row.picked .w::before { content: "▸ "; }
+.bar-bg { height: 8px; background: var(--faint); border-radius: 3px; overflow: hidden; }
+.bar-fg { height: 100%; background: currentColor; border-radius: 3px; transition: width .25s; }
+.dist p { font-size: 13px; color: var(--muted); margin: 14px 0 0; }
+
+/* 2 · ask */
+.ask form { display: flex; gap: 8px; }
+.ask input[type=search] { flex: 1; min-width: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; }
+.results { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 10px; }
+.result { padding: 12px 14px; background: var(--bg); }
+.result .src { display: flex; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); font-family: var(--mono); }
+.result .src .score { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.result .src .bar-bg { width: 70px; color: var(--accent); }
+.result p { margin: 6px 0 0; font-size: 15px; }
+mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2px; }
+.empty { color: var(--muted); font-style: italic; margin: 16px 0 0; }
+
+/* 3 · attention */
+.att-wrap { overflow-x: auto; padding: 14px 10px 10px; }
+table.att { border-collapse: separate; border-spacing: 4px; margin: 0 auto; }
+table.att th { font-weight: 400; }
+table.att thead th { vertical-align: bottom; height: 120px; padding: 0 0 4px; }
+table.att thead th span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+table.att tbody th { text-align: right; padding-right: 10px; white-space: nowrap; }
+table.att tbody th b { display: block; font-size: 14px; }
+table.att tbody th small { font-family: var(--mono); color: var(--muted); font-size: 11px; }
+.cell { width: 64px; height: 42px; border: 0; border-radius: 6px; cursor: pointer; font-family: var(--mono); font-size: 12.5px; transition: background .25s; }
+.cell.best { font-weight: 700; }
+.cell[aria-pressed="true"] { outline: 2px solid var(--accent2); outline-offset: 2px; }
+.detail { margin-top: 14px; padding: 14px 16px; min-height: 64px; }
+.detail h3 { font-size: 15px; margin: 0 0 6px; }
+.detail p, .detail ul { margin: 0; color: var(--muted); font-size: 14px; }
+.detail ul { padding-left: 18px; margin-top: 6px; }
+.linkish { background: none; border: 0; padding: 0; color: var(--accent2); cursor: pointer; font-size: 14px; }
+
+/* 4 · training */
+.chart { position: relative; padding: 10px 6px 4px; overflow-x: auto; }
+.chart svg { display: block; width: 100%; min-width: 640px; height: auto; touch-action: pan-y; }
+.chart .grid { stroke: var(--faint); }
+.chart .axis { stroke: var(--border); }
+.chart .tick { fill: var(--muted); font: 11px var(--mono); }
+.chart .raw { fill: none; stroke: var(--muted); stroke-width: 1; opacity: .4; }
+.chart .ema { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
+.chart .cross { stroke: var(--muted); stroke-dasharray: 3 3; }
+.chart .dot { fill: var(--accent); }
+.chart .cp circle { fill: var(--bg); stroke: var(--accent2); stroke-width: 1.8; }
+.chart .cp text { fill: var(--accent2); font: 700 10px var(--mono); text-anchor: middle; pointer-events: none; }
+.chart .cp { cursor: pointer; }
+.chart .cp.on circle { fill: var(--accent2); }
+.chart .cp.on text { fill: var(--on-accent); }
+.tip { position: absolute; pointer-events: none; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font: 12px var(--mono); white-space: nowrap; transform: translate(-50%, -120%); box-shadow: 0 4px 12px rgb(0 0 0 / .12); }
+.cps { list-style: none; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px 18px; }
+.cps button { display: flex; gap: 10px; width: 100%; text-align: left; background: none; border: 0; padding: 4px 6px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.cps button[aria-pressed="true"] { background: var(--panel); }
+.cps .num { flex: none; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--accent2); color: var(--accent2); font: 700 10px/17px var(--mono); text-align: center; }
+.cps .date { flex: none; width: 64px; font: 12px/21px var(--mono); color: var(--muted); }
+
+/* 5 · experiments */
+.filters { display: grid; gap: 8px; margin-bottom: 14px; }
+.filters .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.filters .row > span { font-size: 12px; font-family: var(--mono); color: var(--muted); width: 64px; }
+.count { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.card { padding: 14px 16px; background: var(--bg); }
+.card header { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: baseline; }
+.card header code { font-size: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; }
+.card header a { font-weight: 600; }
+.card header small { color: var(--muted); }
+.card .q { font-style: italic; margin: 6px 0; }
+.card .m { font-size: 13.5px; color: var(--muted); margin: 4px 0; }
+.card .m b { color: var(--text); font-size: 11px; letter-spacing: .05em; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.card .tags .chip { font-size: 12px; padding: 1px 9px; }
+
+footer { margin: 72px 0 0; border-top: 1px solid var(--border); padding: 20px 0 40px; color: var(--muted); font-size: 13px; }
+#app-error { margin: 24px 0; padding: 14px 16px; }
+
+@media (max-width: 760px) {
+  .gen, .cards { grid-template-columns: minmax(0, 1fr); }
+  #out { font-size: 16px; }
+  .term .body { min-height: 0; }
+  .slider input { width: 120px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <span class="brand"><b id="handle">msenthi7</b> / playground</span>
+    <nav class="nav">
+      <a id="lnk-github" href="https://github.com/msenthi7">GitHub profile</a>
+      <a id="lnk-linkedin" href="#">LinkedIn</a>
+      <a id="lnk-source" href="#">Source</a>
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle light or dark theme">◐ theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <h1 id="name">Matheshwara Annamalai Senthilkumar</h1>
+    <p class="model" id="model-id">matheshwara-v2026</p>
+    <p class="abstract" id="abstract"></p>
+  </div>
+  <div class="panel" id="app-error" hidden>Couldn't load <code>profile.json</code>. If you opened this file directly, serve the folder over HTTP instead.</div>
+
+  <section id="generate" aria-labelledby="h-generate">
+    <p class="eyebrow">01 · inference</p>
+    <h2 id="h-generate">Sample my introduction</h2>
+    <p class="lede">The same decoding as the README hero, but you hold the temperature. At T = 0 the top token always
+      wins; raise it and the runners-up start getting picked. Every candidate is true, so every sample is too.
+      Hover a <span style="color:var(--accent);font-weight:600">highlighted</span> token to see what it beat.</p>
+    <div class="controls">
+      <div id="prompts" class="controls" style="margin:0" role="group" aria-label="Prompts"></div>
+    </div>
+    <div class="controls">
+      <label class="slider">temperature <input id="temp" type="range" min="0" max="1.5" step="0.05" value="0.7"><output id="temp-out" for="temp">0.70</output></label>
+      <button class="btn" id="regen" type="button">↻ Generate</button>
+    </div>
+    <div class="gen">
+      <div class="panel term">
+        <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span id="term-title">inference</span></div>
+        <div class="body">
+          <p class="prompt-line" id="prompt-line"></p>
+          <div id="out" aria-live="polite"></div>
+          <div id="stats"></div>
+        </div>
+      </div>
+      <aside class="panel dist" aria-live="polite">
+        <h3 id="dist-title">next-token distribution</h3>
+        <div id="dist"></div>
+        <p>Probabilities are renormalised over the candidates as p<sup>1/T</sup>. Highlighted tokens with a tint were not the top choice.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="ask" class="ask" aria-labelledby="h-ask">
+    <p class="eyebrow">02 · retrieval</p>
+    <h2 id="h-ask">Ask my profile (retrieval only)</h2>
+    <p class="lede">Type a question. Your browser ranks every fact in my profile by TF-IDF cosine similarity and shows
+      the top three. This is the retrieval half of RAG: with no generator attached, it can't make anything up.</p>
+    <form id="ask-form" role="search">
+      <input id="ask-q" type="search" placeholder="e.g. which projects use Claude?" aria-label="Question" autocomplete="off">
+      <button class="btn" type="submit">Retrieve</button>
+    </form>
+    <div class="controls" style="margin-top:10px" id="ask-suggest" role="group" aria-label="Example questions"></div>
+    <ol class="results" id="results" aria-live="polite"></ol>
+  </section>
+
+  <section id="attention" aria-labelledby="h-att">
+    <p class="eyebrow">03 · attention</p>
+    <h2 id="h-att">Re-run the attention softmax</h2>
+    <p class="lede">Rows are the domains I work in, columns the methods. Each cell is a softmax over how many of my
+      projects in that domain use that method. Drag τ to sharpen or flatten it; click a cell to see the projects behind the weight.</p>
+    <div class="controls">
+      <label class="slider">τ (temperature) <input id="tau" type="range" min="0.2" max="3" step="0.05" value="1"><output id="tau-out" for="tau">1.00</output></label>
+    </div>
+    <div class="panel att-wrap"><table class="att" id="att"></table></div>
+    <div class="panel detail" id="att-detail" aria-live="polite"><p>Click any cell.</p></div>
+  </section>
+
+  <section id="training" aria-labelledby="h-train">
+    <p class="eyebrow">04 · training run</p>
+    <h2 id="h-train">Re-smooth my training run</h2>
+    <p class="lede">My path drawn as a loss curve and smoothed the way TensorBoard does it. Drag the EMA weight, hover for
+      values, click a checkpoint. The curve is illustrative; the checkpoints are real.</p>
+    <div class="controls">
+      <label class="slider">EMA smoothing <input id="beta" type="range" min="0" max="0.98" step="0.01" value="0.9"><output id="beta-out" for="beta">0.90</output></label>
+    </div>
+    <div class="panel chart" id="chart"><div class="tip" id="tip" hidden></div></div>
+    <ol class="cps" id="cps"></ol>
+  </section>
+
+  <section id="experiments" aria-labelledby="h-exp">
+    <p class="eyebrow">05 · experiments</p>
+    <h2 id="h-exp">Filter the experiments</h2>
+    <p class="lede">Every project as a run with a question, a method and a result. Filter by domain or method; tags are clickable.</p>
+    <div class="filters">
+      <div class="row" id="f-domain" role="group" aria-label="Filter by domain"><span>domain</span></div>
+      <div class="row" id="f-method" role="group" aria-label="Filter by method"><span>method</span></div>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="cards" id="cards"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Generated from <code>profile.toml</code> by <code>scripts/build.py</code>, the same source as the
+    <a id="lnk-readme" href="https://github.com/msenthi7">GitHub README</a>. No trackers, no external scripts.</div>
+</footer>
+
+<script>
+"use strict";
+const $ = (sel, root = document) => root.querySelector(sel);
+const NS = "http://www.w3.org/2000/svg";
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const fmt = x => x.toFixed(2).replace(/^0\./, ".");
+let DATA;
+
+function el(tag, props = {}, ...kids) {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v == null || v === false) continue;
+    if (k === "class") n.className = v;
+    else if (k === "text") n.textContent = v;
+    else if (k === "html") n.innerHTML = v;  // only ever build-generated HTML
+    else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else n.setAttribute(k, v === true ? "" : v);
+  }
+  for (const c of kids.flat()) if (c != null) n.append(c);
+  return n;
+}
+function svg(tag, attrs = {}) {
+  const n = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  return n;
+}
+function bar(frac) {
+  return el("div", { class: "bar-bg" }, el("div", { class: "bar-fg", style: `width:${(frac * 100).toFixed(1)}%` }));
+}
+
+/* theme */
+function setTheme(t) { if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; }
+try { setTheme(localStorage.getItem("theme")); } catch {}
+$("#theme").addEventListener("click", () => {
+  const cur = document.documentElement.dataset.theme
+    || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  setTheme(next);
+  try { localStorage.setItem("theme", next); } catch {}
+});
+
+/* ── 01 · inference ─────────────────────────────────────────────────────── */
+const gen = { prompt: 0, T: 0.7, run: 0 };
+
+function distribution(options, T) {
+  if (T < 0.05) return options.map((_, i) => (i === 0 ? 1 : 0));
+  const w = options.map(([, p]) => Math.pow(p, 1 / T));
+  const s = w.reduce((a, b) => a + b, 0);
+  return w.map(x => x / s);
+}
+function drawIndex(dist) {
+  let r = Math.random();
+  for (let i = 0; i < dist.length; i++) { r -= dist[i]; if (r <= 0) return i; }
+  return dist.length - 1;
+}
+function showDist(slot, picked) {
+  $("#dist-title").textContent = `candidates · T = ${slot.T.toFixed(2)}`;
+  const box = $("#dist");
+  box.replaceChildren(...slot.options.map(([word], i) =>
+    el("div", { class: "dist-row" + (i === picked ? " picked" : "") },
+      el("span", { class: "w", text: word }), bar(slot.dist[i]), el("span", { text: fmt(slot.dist[i]) }))));
+}
+
+function promptLine(p) {
+  return [el("span", { class: "p", text: ">>> " }), "generate(", el("span", { class: "s", text: JSON.stringify(p.prompt) }),
+          ", temperature=", el("span", { class: "n", text: gen.T.toFixed(2) }), ")"];
+}
+
+async function generate() {
+  const run = ++gen.run;
+  const p = DATA.prompts[gen.prompt];
+  const out = $("#out"), stats = $("#stats");
+  $("#prompt-line").replaceChildren(...promptLine(p));
+  out.replaceChildren();
+  stats.replaceChildren();
+  if (!reduceMotion) {
+    out.append(el("span", { class: "thinking", text: "∴ thinking…" }));
+    await sleep(500);
+    if (run !== gen.run) return;
+    out.replaceChildren();
+  }
+  let logp = 0, n = 0;
+  for (const tok of p.tokens) {
+    if (run !== gen.run) return;
+    n++;
+    if (!tok.options) {
+      out.append(el("span", { class: "tok", text: tok.text }));
+      if (!reduceMotion) await sleep(45);
+      continue;
+    }
+    const slot = { options: tok.options, T: gen.T, dist: distribution(tok.options, gen.T) };
+    showDist(slot, -1);
+    if (!reduceMotion) await sleep(420);
+    if (run !== gen.run) return;
+    const i = drawIndex(slot.dist);
+    logp += Math.log(slot.dist[i]);
+    showDist(slot, i);
+    const lead = tok.text.match(/^\s*/)[0];
+    const span = el("span", {
+      class: "tok sampled" + (i ? " alt" : ""), tabindex: 0, text: tok.options[i][0],
+      "aria-label": `${tok.options[i][0]}, sampled with probability ${fmt(slot.dist[i])}`,
+    });
+    const show = () => showDist(slot, i);
+    span.addEventListener("mouseenter", show);
+    span.addEventListener("focus", show);
+    out.append(lead, span);
+    if (!reduceMotion) await sleep(260);
+  }
+  out.append(el("span", { class: "cursor", "aria-hidden": "true" }));
+  stats.append(`▸ ${n} tokens · T ${gen.T.toFixed(2)} · log p = ${logp.toFixed(2)} · stop_reason: `,
+               el("span", { class: "ok", text: "end_turn" }));
+}
+
+function initGenerate() {
+  const box = $("#prompts");
+  DATA.prompts.forEach((p, i) => box.append(el("button", {
+    class: "chip mono", type: "button", "aria-pressed": String(i === 0), text: p.prompt,
+    onclick: e => {
+      gen.prompt = i;
+      box.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(c === e.currentTarget)));
+      generate();
+    },
+  })));
+  const temp = $("#temp");
+  temp.addEventListener("input", () => { gen.T = +temp.value; $("#temp-out").textContent = gen.T.toFixed(2); });
+  temp.addEventListener("change", generate);
+  $("#regen").addEventListener("click", generate);
+  $("#term-title").textContent = `${DATA.identity.handle} — inference · ${DATA.identity.model_id}`;
+}
+
+/* ── 02 · retrieval ─────────────────────────────────────────────────────── */
+const STOP = new Set(("a an and are as at be been by can did do does for from had has have he her his how i if in into is it " +
+  "its me my of on or our she so than that the their them they this to was were what when where which who whom why will with " +
+  "you your msenthi7 matheshwara annamalai senthilkumar done work worked").split(" "));
+const stem = w => (w.length > 4 && w.endsWith("s") && !w.endsWith("ss") ? w.slice(0, -1) : w);
+const terms = s => (s.toLowerCase().match(/[a-z0-9]+/g) || []).filter(w => w.length > 1 && !STOP.has(w)).map(stem);
+const index = { docs: [], idf: new Map() };
+
+function vectorize(words) {
+  const tf = new Map();
+  for (const w of words) tf.set(w, (tf.get(w) || 0) + 1);
+  const v = new Map();
+  let norm = 0;
+  for (const [w, c] of tf) {
+    const x = (1 + Math.log(c)) * (index.idf.get(w) || 0);
+    if (x) { v.set(w, x); norm += x * x; }
+  }
+  return { v, norm: Math.sqrt(norm) };
+}
+function buildIndex() {
+  const words = DATA.chunks.map(c => terms(c.text));
+  const df = new Map();
+  for (const ws of words) for (const w of new Set(ws)) df.set(w, (df.get(w) || 0) + 1);
+  const N = words.length;
+  for (const [w, d] of df) index.idf.set(w, Math.log((N + 1) / (d + 1)) + 1);
+  index.docs = words.map((ws, i) => ({ chunk: DATA.chunks[i], ...vectorize(ws) }));
+}
+function highlighted(text, qset) {
+  const p = el("p");
+  for (const part of text.split(/([A-Za-z0-9]+)/)) {
+    if (part && /^[A-Za-z0-9]+$/.test(part) && qset.has(stem(part.toLowerCase()))) p.append(el("mark", { text: part }));
+    else if (part) p.append(part);
+  }
+  return p;
+}
+function retrieve(q) {
+  const list = $("#results");
+  list.replaceChildren();
+  const qv = vectorize(terms(q));
+  if (!qv.norm) {
+    list.append(el("li", { class: "empty", text: "None of those words appear in my profile, so there is nothing to retrieve. With no LLM attached, nothing gets made up." }));
+    return;
+  }
+  const scored = index.docs.map(d => {
+    let dot = 0;
+    for (const [w, x] of qv.v) dot += x * (d.v.get(w) || 0);
+    return { d, score: d.norm ? dot / (d.norm * qv.norm) : 0 };
+  }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3);
+  if (!scored.length) {
+    list.append(el("li", { class: "empty", text: "Nothing in my profile matches that. With no LLM attached, nothing gets made up." }));
+    return;
+  }
+  const qset = new Set(qv.v.keys());
+  for (const { d, score } of scored) {
+    const c = d.chunk;
+    const src = c.url ? el("a", { href: c.url, text: c.source }) : el("span", { text: c.source });
+    list.append(el("li", { class: "panel result" },
+      el("div", { class: "src" }, src, el("span", { class: "score" }, bar(score), `cos ${fmt(score)}`)),
+      highlighted(c.text, qset)));
+  }
+}
+function initAsk() {
+  buildIndex();
+  const input = $("#ask-q");
+  $("#ask-form").addEventListener("submit", e => { e.preventDefault(); retrieve(input.value); });
+  for (const q of ["RAG and retrieval", "Claude", "student well-being survey", "patent", "hackathon", "Monte Carlo risk"]) {
+    $("#ask-suggest").append(el("button", { class: "chip", type: "button", text: q,
+      onclick: () => { input.value = q; retrieve(q); } }));
+  }
+}
+
+/* ── 03 · attention ─────────────────────────────────────────────────────── */
+const att = { tau: 1, sel: null };
+function softmaxRows(counts, tau) {
+  return counts.map(row => {
+    const e = row.map(c => Math.exp(c / tau));
+    const s = e.reduce((a, b) => a + b, 0);
+    return e.map(x => x / s);
+  });
+}
+function renderAttention() {
+  const A = DATA.attention, W = softmaxRows(A.counts, att.tau);
+  const peak = Math.max(...W.flat());
+  const table = $("#att");
+  const head = el("thead", {}, el("tr", {}, el("th"), A.keys.map(([, label]) => el("th", { scope: "col" }, el("span", { text: label })))));
+  const body = el("tbody");
+  A.domains.forEach((domain, i) => {
+    const best = Math.max(...W[i]);
+    const row = el("tr", {}, el("th", { scope: "row" }, el("b", { text: domain }), el("small", { text: `${A.runs[i]} runs` })));
+    W[i].forEach((w, j) => {
+      const level = Math.pow(w / peak, 0.75);
+      const on = att.sel && att.sel[0] === i && att.sel[1] === j;
+      const cell = el("button", {
+        type: "button", class: "cell" + (Math.abs(w - best) < 1e-9 ? " best" : ""), text: fmt(w),
+        "aria-pressed": String(!!on), "aria-label": `${domain} attends to ${A.keys[j][1]} with weight ${fmt(w)}`,
+        style: `background:color-mix(in srgb, var(--accent) ${Math.round(4 + 96 * level)}%, var(--faint));` +
+               `color:${level > 0.55 ? "var(--on-accent)" : "var(--muted)"}`,
+        onclick: () => { att.sel = [i, j]; renderAttention(); },
+      });
+      row.append(el("td", {}, cell));
+    });
+    body.append(row);
+  });
+  table.replaceChildren(head, body);
+  renderAttDetail(W);
+}
+function renderAttDetail(W) {
+  const box = $("#att-detail");
+  if (!att.sel) return;
+  const [i, j] = att.sel, A = DATA.attention;
+  const domain = A.domains[i], [key, label] = A.keys[j];
+  const names = A.evidence[`${i},${j}`] || [];
+  const byName = new Map(DATA.projects.map(p => [p.name, p]));
+  const kids = [el("h3", { text: `${domain} × ${label} = ${fmt(W[i][j])}` })];
+  if (names.length) {
+    kids.push(el("p", { text: `${names.length} of ${A.runs[i]} ${domain} runs use ${label}; that count, divided by τ, is this cell's logit.` }),
+              el("ul", {}, names.map(n => el("li", {}, el("a", { href: byName.get(n).url, text: n }), ` · ${byName.get(n).id}`))));
+  } else {
+    kids.push(el("p", { text: `No ${domain} run uses ${label}. Its weight comes only from the softmax's floor: e^(0/τ) = 1 in the numerator.` }));
+  }
+  kids.push(el("p", { style: "margin-top:8px" }, el("button", { type: "button", class: "linkish",
+    text: `Show these experiments ↓`, onclick: () => { ex.domain = domain; ex.method = key; renderExperiments(); $("#experiments").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }); } })));
+  box.replaceChildren(...kids);
+}
+function initAttention() {
+  att.tau = DATA.attention.temperature;
+  const tau = $("#tau");
+  tau.value = att.tau;
+  $("#tau-out").textContent = att.tau.toFixed(2);
+  tau.addEventListener("input", () => { att.tau = +tau.value; $("#tau-out").textContent = att.tau.toFixed(2); renderAttention(); });
+  renderAttention();
+}
+
+/* ── 04 · training run ──────────────────────────────────────────────────── */
+const MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+const monthYear = t => `${MONTHS[Math.min(11, Math.floor((t % 1) * 12))]} ${Math.floor(t)}`;
+const tr = { beta: 0.9, sel: null };
+const G = { W: 900, H: 290, X0: 50, X1: 884, Y0: 18, Y1: 256, YMAX: 1.8 };
+
+function ema(values, beta) {
+  const out = [];
+  let e = values[0];
+  for (const v of values) { e = beta * e + (1 - beta) * v; out.push(e); }
+  return out;
+}
+function initTraining() {
+  const { t, raw } = DATA.loss, cps = DATA.checkpoints;
+  const A0 = t[0], A1 = t[t.length - 1] + 0.25;
+  const sx = x => G.X0 + (G.X1 - G.X0) * (x - A0) / (A1 - A0);
+  const sy = v => G.Y1 - (G.Y1 - G.Y0) * Math.min(v, G.YMAX) / G.YMAX;
+  const path = vals => "M" + vals.map((v, i) => `${sx(t[i]).toFixed(1)} ${sy(v).toFixed(1)}`).join(" L");
+  const nearest = x => { let b = 0; for (let i = 1; i < t.length; i++) if (Math.abs(t[i] - x) < Math.abs(t[b] - x)) b = i; return b; };
+
+  const s = svg("svg", { viewBox: `0 0 ${G.W} ${G.H}`, role: "img", "aria-label": "Training loss curve with checkpoints" });
+  for (const v of [0.5, 1, 1.5]) {
+    s.append(svg("line", { class: "grid", x1: G.X0, x2: G.X1, y1: sy(v), y2: sy(v) }));
+    const lab = svg("text", { class: "tick", x: G.X0 - 8, y: sy(v) + 4, "text-anchor": "end" });
+    lab.textContent = v.toFixed(1);
+    s.append(lab);
+  }
+  s.append(svg("line", { class: "axis", x1: G.X0, x2: G.X1, y1: G.Y1, y2: G.Y1 }));
+  for (let y = Math.ceil(A0); y <= Math.floor(A1); y++) {
+    const lab = svg("text", { class: "tick", x: sx(y), y: G.Y1 + 18, "text-anchor": "middle" });
+    lab.textContent = y;
+    s.append(svg("line", { class: "axis", x1: sx(y), x2: sx(y), y1: G.Y1, y2: G.Y1 + 5 }), lab);
+  }
+  s.append(svg("path", { class: "raw", d: path(raw) }));
+  const curve = svg("path", { class: "ema" });
+  const cross = svg("line", { class: "cross", y1: G.Y0, y2: G.Y1, visibility: "hidden" });
+  const dot = svg("circle", { class: "dot", r: 4, visibility: "hidden" });
+  const overlay = svg("rect", { x: G.X0, y: G.Y0, width: G.X1 - G.X0, height: G.Y1 - G.Y0, fill: "transparent" });
+  s.append(curve, cross, dot, overlay);
+
+  const groups = cps.map((cp, k) => {
+    const g = svg("g", { class: "cp", tabindex: 0, role: "button", "aria-label": `Checkpoint ${k + 1}: ${cp.date} ${cp.label}` });
+    const c = svg("circle", { r: 9 });
+    const n = svg("text");
+    n.textContent = k + 1;
+    g.append(c, n);
+    g.addEventListener("click", () => selectCp(k));
+    g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectCp(k); } });
+    s.append(g);
+    return { g, c, n, i: nearest(cp.when) };
+  });
+  const chart = $("#chart"), tip = $("#tip");
+  chart.prepend(s);
+
+  let smooth = [];
+  function redraw() {
+    smooth = ema(raw, tr.beta);
+    curve.setAttribute("d", path(smooth));
+    let prevX = -Infinity;
+    for (const gp of groups) {
+      const x = sx(t[gp.i]);
+      const y = sy(smooth[gp.i]) - (x - prevX < 22 ? 26 : 0);
+      prevX = x;
+      gp.c.setAttribute("cx", x); gp.c.setAttribute("cy", y);
+      gp.n.setAttribute("x", x); gp.n.setAttribute("y", y + 3.5);
+    }
+  }
+  function hover(ev) {
+    const r = s.getBoundingClientRect();
+    const x = (ev.clientX - r.left) / r.width * G.W;
+    const i = nearest(A0 + (x - G.X0) / (G.X1 - G.X0) * (A1 - A0));
+    const px = sx(t[i]), py = sy(smooth[i]);
+    cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
+    dot.setAttribute("cx", px); dot.setAttribute("cy", py); dot.setAttribute("visibility", "visible");
+    tip.hidden = false;
+    tip.textContent = `${monthYear(t[i])} · loss ${smooth[i].toFixed(3)} (raw ${raw[i].toFixed(3)})`;
+    // Position relative to the (horizontally scrollable) chart panel, kept inside it.
+    const c = chart.getBoundingClientRect();
+    const left = r.left - c.left + chart.scrollLeft + (px / G.W) * r.width;
+    tip.style.left = `${Math.max(chart.scrollLeft + 90, Math.min(chart.scrollLeft + c.width - 90, left))}px`;
+    tip.style.top = `${r.top - c.top + (py / G.H) * r.height}px`;
+  }
+  overlay.addEventListener("pointermove", hover);
+  overlay.addEventListener("pointerleave", () => { cross.setAttribute("visibility", "hidden"); dot.setAttribute("visibility", "hidden"); tip.hidden = true; });
+
+  const list = $("#cps");
+  const buttons = cps.map((cp, k) => {
+    const b = el("button", { type: "button", "aria-pressed": "false", onclick: () => selectCp(k) },
+      el("span", { class: "num", text: k + 1 }), el("span", { class: "date", text: cp.date || "" }), el("span", { text: cp.label }));
+    list.append(el("li", {}, b));
+    return b;
+  });
+  function selectCp(k) {
+    tr.sel = tr.sel === k ? null : k;
+    groups.forEach((gp, j) => gp.g.classList.toggle("on", j === tr.sel));
+    buttons.forEach((b, j) => b.setAttribute("aria-pressed", String(j === tr.sel)));
+  }
+
+  const beta = $("#beta");
+  beta.addEventListener("input", () => { tr.beta = +beta.value; $("#beta-out").textContent = tr.beta.toFixed(2); redraw(); });
+  redraw();
+}
+
+/* ── 05 · experiments ───────────────────────────────────────────────────── */
+const ex = { domain: null, method: null };
+function chipRow(boxSel, values, current, onPick) {
+  const box = $(boxSel);
+  box.querySelectorAll("button").forEach(b => b.remove());
+  for (const [value, label] of [[null, "all"], ...values]) {
+    box.append(el("button", { class: "chip", type: "button", text: label, "aria-pressed": String(value === current),
+      onclick: () => onPick(value) }));
+  }
+}
+function renderExperiments() {
+  const labels = new Map(DATA.attention.keys);
+  chipRow("#f-domain", DATA.attention.domains.map(d => [d, d]), ex.domain, v => { ex.domain = v; renderExperiments(); });
+  chipRow("#f-method", DATA.attention.keys, ex.method, v => { ex.method = v; renderExperiments(); });
+  const shown = DATA.projects.filter(p => (!ex.domain || p.domain === ex.domain) && (!ex.method || p.uses.includes(ex.method)));
+  $("#count").textContent = `Showing ${shown.length} of ${DATA.projects.length} runs`;
+  $("#cards").replaceChildren(...shown.map(p => el("article", { class: "panel card" },
+    el("header", {}, el("code", { text: p.id }), el("a", { href: p.url, text: p.name }), el("small", { text: `· ${p.domain}` })),
+    p.question ? el("p", { class: "q", text: p.question }) : null,
+    p.method ? el("p", { class: "m" }, el("b", { text: "METHOD " }), p.method) : null,
+    p.result ? el("p", { class: "m" }, el("b", { text: p.question ? "RESULT " : "SUMMARY " }), p.result) : null,
+    el("div", { class: "tags" }, p.uses.map(u => el("button", { class: "chip", type: "button", text: labels.get(u),
+      "aria-pressed": String(ex.method === u), onclick: () => { ex.method = u; renderExperiments(); } }))))));
+}
+
+/* ── boot ───────────────────────────────────────────────────────────────── */
+function initHeader() {
+  const { identity: id, links } = DATA;
+  document.title = `${id.model_id} · ${id.name}`;
+  $("#name").textContent = id.name;
+  $("#model-id").textContent = `${id.model_id} · interactive model card`;
+  $("#abstract").innerHTML = DATA.abstract;  // built from profile.toml with HTML escaped
+  $("#handle").textContent = id.handle;
+  $("#lnk-github").href = links.github;
+  $("#lnk-readme").href = links.github;
+  $("#lnk-linkedin").href = links.linkedin;
+  $("#lnk-source").href = links.source;
+}
+
+fetch("profile.json")
+  .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+  .then(d => {
+    DATA = d;
+    initHeader();
+    initGenerate();
+    initAsk();
+    initAttention();
+    initTraining();
+    renderExperiments();
+    generate();
+  })
+  .catch(err => { $("#app-error").hidden = false; console.error(err); });
+</script>
+</body>
+</html>

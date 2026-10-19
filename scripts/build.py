@@ -565,6 +565,7 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
         badge("IEEE", "UCMMT 2021", "00629B", by_kind["Paper"]["url"], "ieee"),
         badge("Patent", "202241031906", "6e7781", by_kind["Patent"]["url"]),
         badge("README", "maintained by an LLM agent", "8250df", "#7-lab-notebook", "anthropic"),
+        badge("Playground", "interactive", "1a7f37", links["playground"]),
     ])
 
     rows = profile["card"]["rows"]
@@ -596,6 +597,11 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
 
 <p align="center">
 {badges}
+</p>
+
+<p align="center">
+<b><a href="{links['playground']}">▶ Open the interactive version</a></b>: sample this intro at any temperature, query my
+profile with in-browser retrieval, re-run the attention softmax and re-smooth the training curve.
 </p>
 
 > **Abstract.** {abstract}
@@ -662,6 +668,102 @@ repository and number in it can be traced back to that activity.
 """
 
 
+# ── Playground data (docs/profile.json, read by docs/index.html) ────────────
+
+def md_plain(s: str) -> str:
+    """Markdown/inline HTML → plain text, for the in-browser retrieval index."""
+    s = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", s)
+    s = re.sub(r"</?\w+[^>]*>", "", s)
+    return " ".join(s.replace("**", "").replace("`", "").replace("*", "").split())
+
+
+def md_html(s: str) -> str:
+    """The small Markdown subset profile.toml uses → escaped HTML."""
+    s = escape(s, quote=False)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: f'<a href="{escape(m[2])}">{m[1]}</a>', s)
+    s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
+    return re.sub(r"\*([^*]+)\*", r"<em>\1</em>", s)
+
+
+def first_url(s: str) -> str:
+    m = re.search(r"\]\(([^)\s]+)\)", s)
+    return m[1] if m else ""
+
+
+def prompt_tokens(handle: str, answer: str) -> list[dict]:
+    out = []
+    for tok in tokenize(answer):
+        if tok.sampled:
+            word = tok.text.strip()
+            options = [word] + tok.alternatives
+            probs = candidate_probs(f"{handle}:{word}", len(options))
+            out.append({"text": tok.text, "options": [[o, p] for o, p in zip(options, probs)]})
+        else:
+            out.append({"text": tok.text})
+    return out
+
+
+def site_data(profile: dict) -> dict:
+    ident, handle = profile["identity"], profile["identity"]["handle"]
+    domains, keys, _, runs = attention_matrix(profile)
+    key_ids = [k for k, _ in keys]
+    counts = [[0] * len(keys) for _ in domains]
+    evidence: dict[str, list[str]] = {}
+    for p in profile["projects"]:
+        i = domains.index(p["domain"])
+        for u in p.get("uses", []):
+            counts[i][key_ids.index(u)] += 1
+            evidence.setdefault(f"{i},{key_ids.index(u)}", []).append(p["name"])
+
+    ids = run_ids(profile["projects"])
+    labels = dict(keys)
+    projects = [{
+        "id": ids[p["name"]], "name": p["name"], "url": repo_url(handle, p["repo"]), "domain": p["domain"],
+        "featured": bool(p.get("featured")), "question": p.get("question", ""), "method": p.get("method", ""),
+        "result": p.get("result") or p.get("summary", ""), "uses": p.get("uses", []),
+    } for p in profile["projects"]]
+
+    cps = profile["checkpoints"]
+    ts, raw, _ = loss_curve(profile, cps[0]["when"] - 0.25, cps[-1]["when"])
+
+    prompts = [{"prompt": profile["hero"]["prompt"], "tokens": prompt_tokens(handle, profile["hero"]["answer"])}]
+    prompts += [{"prompt": q["prompt"], "tokens": prompt_tokens(handle, q["answer"])}
+                for q in profile.get("playground", {}).get("prompts", [])]
+
+    chunks = [{"source": "Abstract", "text": md_plain(profile["abstract"]["text"]), "url": ""}]
+    chunks += [{"source": f"Model card · {k}", "text": f"{k}: {md_plain(v)}", "url": first_url(v)}
+               for k, v in profile["card"]["rows"][1:]]  # row 0 is just the model id
+    chunks += [{"source": f"Experiment · {p['name']}", "url": p["url"],
+                "text": " ".join(x for x in (f"{p['name']}.", p["question"], p["method"], p["result"],
+                                             "Tags: " + ", ".join(labels[u] for u in p["uses"]) + ".") if x)}
+               for p in projects]
+    chunks += [{"source": f"Inductive bias · {b['prior']}", "text": f"{b['prior']}. {b['practice']}",
+                "url": repo_url(handle, b["evidence"])} for b in profile["biases"]]
+    chunks += [{"source": f"{p['kind']} · {p['title']}", "url": p.get("url", ""),
+                "text": md_plain(f"{p['title']}. {p['authors']}. {p['venue']}. {p.get('note', '')}")}
+               for p in profile["publications"]]
+    chunks += [{"source": f"Presentation · {date}", "text": f"{title}. {venue}.", "url": ""}
+               for date, title, venue in profile.get("talks", {}).get("items", [])]
+    chunks += [{"source": f"Training run · {cp.get('date') or cp['when']}", "text": cp["label"], "url": ""}
+               for cp in cps]
+
+    return {
+        "identity": ident,
+        "links": {**profile["links"], "github": f"https://github.com/{handle}",
+                  "source": f"https://github.com/{handle}/{handle}"},
+        "abstract": md_html(" ".join(profile["abstract"]["text"].split())),
+        "prompts": prompts,
+        "attention": {"domains": domains, "keys": keys, "counts": counts, "runs": runs,
+                      "evidence": evidence, "temperature": profile["attention"].get("temperature", 1.0)},
+        "projects": sorted(projects, key=lambda p: (not p["featured"], p["id"]), reverse=False),
+        "loss": {"t": [round(t, 4) for t in ts], "raw": [round(v, 4) for v in raw]},
+        "checkpoints": [{"when": cp["when"], "date": cp.get("date", ""), "label": cp["label"],
+                         "note": cp.get("note", "")} for cp in cps],
+        "chunks": chunks,
+    }
+
+
 def build(root: Path) -> list[Path]:
     profile = tomllib.loads((root / "profile.toml").read_text(encoding="utf-8"))
     notebook_path = root / "data" / "notebook.json"
@@ -678,6 +780,11 @@ def build(root: Path) -> list[Path]:
     readme = root / "README.md"
     readme.write_text(render_readme(profile, notebook), encoding="utf-8")
     written.append(readme)
+    docs = root / "docs"
+    docs.mkdir(exist_ok=True)
+    data = docs / "profile.json"
+    data.write_text(json.dumps(site_data(profile), ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    written.append(data)
     return written
 
 
