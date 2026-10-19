@@ -233,8 +233,8 @@ def render_hero(profile: dict, theme: dict) -> str:
     css.append("@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}} .blink{animation:blink 1s steps(1) infinite}")
     body.append(f'<g class="{hold(done)}" style="opacity:0"><rect class="blink" x="{cx:.1f}" y="{cy - FS + 3}" '
                 f'width="{CW * 0.6:.1f}" height="{FS}" fill="{c["accent"]}"/></g>')
-    stats = (f'<tspan fill="{c["muted"]}">▸ {len(tokens)} tokens · temperature 0.7 · top-p 0.95 · '
-             f'stop_reason: </tspan><tspan fill="{c["green"]}">end_turn</tspan>')
+    stats = (f'<tspan fill="{c["muted"]}">▸ {len(tokens)} tokens · temperature 0.7 · </tspan>'
+             f'<tspan fill="{c["green"]}">done ✓</tspan>')
     body.append(f'<text class="{hold(done + 0.15)}" style="opacity:0" x="{PAD}" y="{last_baseline + 46}" '
                 f'font-family="{MONO}" font-size="12.5">{stats}</text>')
 
@@ -288,10 +288,10 @@ def render_attention(profile: dict, theme: dict) -> str:
     ]
     body = [
         f'<rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="12" fill="{c["bg"]}" stroke="{c["border"]}"/>',
-        f'<text x="28" y="34" font-family="{MONO}" font-size="14" fill="{c["text"]}">'
-        f'attention(<tspan fill="{c["accent"]}">Q</tspan> = domains, <tspan fill="{c["accent2"]}">K</tspan> = methods)</text>',
-        f'<text x="{W - 28}" y="34" text-anchor="end" font-family="{MONO}" font-size="12" fill="{c["muted"]}">'
-        f"softmax over project evidence · τ = {tau:g}</text>",
+        f'<text x="28" y="34" font-family="{SANS}" font-size="15" font-weight="600" fill="{c["text"]}">'
+        "What I use, by area</text>",
+        f'<text x="{W - 28}" y="34" text-anchor="end" font-family="{SANS}" font-size="12" fill="{c["muted"]}">'
+        "darker = used more · each row adds up to 100%</text>",
     ]
     for j, (_, label) in enumerate(keys):
         cx = GX + j * PITCH_X + CELL_W / 2
@@ -308,12 +308,12 @@ def render_attention(profile: dict, theme: dict) -> str:
         body.append(f'<text x="{GX - 16}" y="{cy - 1:.1f}" text-anchor="end" font-family="{SANS}" '
                     f'font-size="14" font-weight="600" fill="{c["text"]}">{escape(domain)}</text>')
         body.append(f'<text x="{GX - 16}" y="{cy + 15:.1f}" text-anchor="end" font-family="{MONO}" '
-                    f'font-size="11" fill="{c["muted"]}">{n} run{"s" if n != 1 else ""}</text>')
+                    f'font-size="11" fill="{c["muted"]}">{n} project{"s" if n != 1 else ""}</text>')
         best = max(row)
         for j, w in enumerate(row):
             x = GX + j * PITCH_X
             level = (w / peak) ** 0.75
-            label = f"{w:.2f}".lstrip("0")
+            label = f"{round(100 * w)}%"
             ink = c["on_accent"] if level > 0.55 else c["muted"]
             weight = ' font-weight="700"' if math.isclose(w, best) else ""
             body.append(
@@ -327,17 +327,17 @@ def render_attention(profile: dict, theme: dict) -> str:
 
     fy = GY + len(domains) * PITCH_Y + 22
     body.append(f'<text x="28" y="{fy}" font-family="{SANS}" font-size="12" fill="{c["muted"]}">'
-                "Each row sums to 1. Bold = where that domain attends most.</text>")
+                "Counted from the tools listed on each of my projects. Bold = what I use most in that area.</text>")
     gx0 = W - 28 - 180
     body.append(f'<text x="{gx0 - 8}" y="{fy}" text-anchor="end" font-family="{MONO}" font-size="11" '
-                f'fill="{c["muted"]}">0</text>')
+                f'fill="{c["muted"]}">0%</text>')
     for s in range(10):
         body.append(f'<rect x="{gx0 + 14 * s}" y="{fy - 10}" width="14" height="12" fill="{c["accent"]}" '
                     f'fill-opacity="{0.04 + 0.96 * (s / 9):.2f}"/>')
     body.append(f'<text x="{gx0 + 148}" y="{fy}" font-family="{MONO}" font-size="11" fill="{c["muted"]}">'
-                f"{peak:.2f}</text>")
+                f"{round(100 * peak)}%</text>")
 
-    return (svg_open(W, H, "Attention map: which methods each domain of my work relies on")
+    return (svg_open(W, H, "What I use, by area: how often each kind of tool appears in my projects")
             + "<style>" + "\n".join(css) + "</style>\n" + "\n".join(body) + "\n</svg>\n")
 
 
@@ -402,12 +402,10 @@ def render_training(profile: dict, theme: dict) -> str:
         f'<rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="12" fill="{c["bg"]}" stroke="{c["border"]}"/>',
         f'<text x="28" y="34" font-family="{MONO}" font-size="14" fill="{c["text"]}">train/loss'
         f'<tspan fill="{c["muted"]}" font-family="{SANS}" font-size="13">  — what I don\'t know yet</tspan></text>',
-        f'<line x1="{W - 340}" y1="30" x2="{W - 320}" y2="30" stroke="{c["accent"]}" stroke-width="2.5"/>',
-        f'<text x="{W - 314}" y="34" font-family="{MONO}" font-size="11" fill="{c["muted"]}">EMA 0.9</text>',
-        f'<line x1="{W - 244}" y1="30" x2="{W - 224}" y2="30" stroke="{c["muted"]}" stroke-width="1" opacity=".6"/>',
-        f'<text x="{W - 218}" y="34" font-family="{MONO}" font-size="11" fill="{c["muted"]}">raw</text>',
-        f'<text x="{W - 28}" y="34" text-anchor="end" font-family="{MONO}" font-size="11" fill="{c["muted"]}">'
-        f'run {escape(profile["identity"]["model_id"])}</text>',
+        f'<line x1="{W - 220}" y1="30" x2="{W - 200}" y2="30" stroke="{c["accent"]}" stroke-width="2.5"/>',
+        f'<text x="{W - 194}" y="34" font-family="{SANS}" font-size="12" fill="{c["muted"]}">trend</text>',
+        f'<line x1="{W - 130}" y1="30" x2="{W - 110}" y2="30" stroke="{c["muted"]}" stroke-width="1" opacity=".6"/>',
+        f'<text x="{W - 104}" y="34" font-family="{SANS}" font-size="12" fill="{c["muted"]}">week to week</text>',
     ]
     for v in (0.5, 1.0, 1.5):
         body.append(f'<line x1="{X0}" y1="{sy(v):.1f}" x2="{X1}" y2="{sy(v):.1f}" stroke="{c["faint"]}"/>')
@@ -503,53 +501,48 @@ def run_ids(projects: list[dict]) -> dict[str, str]:
 
 def render_cards(profile: dict) -> str:
     handle = profile["identity"]["handle"]
-    labels = dict(profile["attention"]["keys"])
-    ids = run_ids(profile["projects"])
     featured = [p for p in profile["projects"] if p.get("featured")]  # cards keep profile.toml order
     cells = []
     for p in featured:
-        tags = " · ".join(labels[u] for u in p.get("uses", []))
+        stack = f'<sub><b>Built with</b> {escape(p["stack"])}</sub>\n' if p.get("stack") else ""
         cells.append(
             '<td width="50%" valign="top">\n'
-            f'<code>{ids[p["name"]]}</code> <b><a href="{repo_url(handle, p["repo"])}">{escape(p["name"])}</a></b>'
-            f' <sub>· {escape(p["domain"])}</sub><br>\n'
+            f'<b><a href="{repo_url(handle, p["repo"])}">{escape(p["name"])}</a></b> <sub>· {escape(p["domain"])}</sub><br>\n'
             f'<i>{escape(p["question"])}</i><br>\n'
-            f'<sub><b>METHOD</b> {escape(p["method"])}</sub><br>\n'
-            f'<sub><b>RESULT</b> {escape(p["result"])}</sub><br>\n'
-            f"<sub><code>{escape(tags)}</code></sub>\n"
+            f'<sub><b>How</b> {escape(p["method"])}</sub><br>\n'
+            f'<sub><b>Result</b> {escape(p["result"])}</sub><br>\n'
+            f"{stack}"
             "</td>"
         )
     rows = ["<tr>\n" + "\n".join(cells[i:i + 2]) + "\n</tr>" for i in range(0, len(cells), 2)]
     others = sorted((p for p in profile["projects"] if not p.get("featured")), key=lambda p: p["date"], reverse=True)
-    more = "\n".join(
-        f'- `{ids[p["name"]]}` [{p["name"]}]({repo_url(handle, p["repo"])}): {p["summary"]}' for p in others
-    )
+    more = "\n".join(f'- [{p["name"]}]({repo_url(handle, p["repo"])}): {p["summary"]}' for p in others)
     return (
         "<table>\n" + "\n".join(rows) + "\n</table>\n\n"
-        f"<details>\n<summary><b>{len(others)} more runs</b> (data engineering, statistics, scrapers)</summary>\n\n"
-        f"{more}\n\n</details>"
+        f"<details>\n<summary><b>{len(others)} more projects</b></summary>\n\n{more}\n\n</details>"
     )
 
 
 def render_notebook(entries: list[dict], handle: str) -> str:
     if not entries:
-        return "_No entries yet. The agent writes one each Monday after a week with public activity._"
+        return "_Nothing yet: an update appears the Monday after a week with new public commits._"
     out = []
     for e in entries[:4]:
         repos = " ".join(f"[`{escape(r)}`]({repo_url(handle, r)})" for r in e.get("repos", []))
-        meta = " · ".join(x for x in (repos, "✓ grounded", f"written by {escape(e['writer'])}") if x)
+        writer = "Claude" if e["writer"] != "deterministic" else "automatic summary"
+        meta = " · ".join(x for x in (repos, f"✓ checked · written by {writer}") if x)
         out.append(f"**{e['week']}** · {escape(e['headline'])}  \n{escape(e['body'])}  \n<sub>{meta}</sub>")
     return "\n\n".join(out)
 
 
 NOTEBOOK_DIAGRAM = """```mermaid
 flowchart LR
-    A[Public GitHub activity<br/>past 7 days] --> B[Claude<br/>structured JSON entry]
-    B --> C{Grounding check<br/>repos and numbers}
-    C -- pass --> E[README]
-    C -- fail --> D[Repair round<br/>violations fed back]
+    A[My public GitHub activity<br/>last 7 days] --> B[Claude writes<br/>a short update]
+    B --> C{Do the names and<br/>numbers match?}
+    C -- yes --> E[This page]
+    C -- no --> D[One retry, with<br/>the problems listed]
     D --> B
-    D -. fails again .-> F[Deterministic summary]
+    D -. still wrong .-> F[Plain automatic summary]
     F --> E
 ```"""
 
@@ -564,15 +557,15 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
         badge("Email", "say hi", "EA4335", f"mailto:{links['email']}", "gmail"),
         badge("IEEE", "UCMMT 2021", "00629B", by_kind["Paper"]["url"], "ieee"),
         badge("Patent", "202241031906", "6e7781", by_kind["Patent"]["url"]),
-        badge("README", "maintained by an LLM agent", "8250df", "#7-lab-notebook", "anthropic"),
         badge("Playground", "interactive", "1a7f37", links["playground"]),
+        badge("This page", "updates itself weekly", "8250df", "#this-week", "anthropic"),
     ])
 
     rows = profile["card"]["rows"]
     card = [f"| **{rows[0][0]}** | {rows[0][1]} |", "|:--|:--|"]
     card += [f"| **{k}** | {v} |" for k, v in rows[1:]]
 
-    biases = ["| Prior | In practice | Evidence |", "|:--|:--|:--|"]
+    biases = ["| Rule | What it looks like | See it in |", "|:--|:--|:--|"]
     biases += [f"| **{b['prior']}** | {b['practice']} | [`{b['evidence']}`]({repo_url(handle, b['evidence'])}) |"
                for b in profile["biases"]]
 
@@ -589,82 +582,78 @@ def render_readme(profile: dict, notebook: list[dict]) -> str:
     if bibtex:
         pubs.append(f"\n<details>\n<summary><b>BibTeX</b></summary>\n\n```bibtex\n{bibtex}\n```\n\n</details>")
 
-    abstract = " ".join(profile["abstract"]["text"].split())
+    intro = " ".join(profile["abstract"]["text"].split())
 
     return f"""<!-- Generated by scripts/build.py from profile.toml. Edit those, not this file. -->
 
-{picture("hero", f"A language model decodes an introduction to {ident['name']}, token by token.")}
+{picture("hero", f"An animated chat window types out an introduction to {ident['name']}, word by word.")}
 
 <p align="center">
 {badges}
 </p>
 
-<p align="center">
-<b><a href="{links['playground']}">▶ Open the interactive version</a></b>: sample this intro at any temperature, query my
-profile with in-browser retrieval, re-run the attention softmax and re-smooth the training curve.
-</p>
+{intro}
 
-> **Abstract.** {abstract}
+<b><a href="{links['playground']}">▶ Try the interactive version of this page</a></b>, where you can remix the intro and
+search my work.
 
-## 1. Model card
+## About me
 
 {chr(10).join(card)}
 
-## 2. What I attend to
-
-{picture("attention", "Attention heatmap: rows are the domains I work in, columns the methods I use, cells a softmax over my projects.")}
-
-<sub>Each cell is a row-wise softmax over how many of my projects in that domain use that method, computed by
-<code>scripts/build.py</code> from the tags in <code>profile.toml</code>. The dashed box is the query being processed.</sub>
-
-## 3. Experiments
+## Projects
 
 {render_cards(profile)}
 
-## 4. Inductive biases
+## What I work with
 
-The priors I bring to every AI system, each with the repo where it's applied.
+{picture("attention", "Heatmap of which kinds of tools I use in each area of my work, counted from my projects.")}
+
+<sub>If you speak ML: each row is a softmax, so this is basically my attention map.</sub>
+
+## How I build AI tools
+
+A few rules I follow, and where you can see each one.
 
 {chr(10).join(biases)}
 
-## 5. Training run
+## My learning curve
 
-{picture("training", "My path drawn as a training-loss curve, with checkpoints from an IEEE paper and a patent to LLM systems.")}
+{picture("training", "My path from electronics to machine learning, drawn as a curve that drops as I learn and jumps when I start something new.")}
 
-<sub>Loss spikes at each distribution shift (a new field) and recovers faster every time. The curve is illustrative;
-the checkpoints are real.</sub>
+<sub>Drawn the way ML people plot training. The line is roughly what I don't know yet, and it jumps whenever I take on
+something new. The curve is for fun, but the milestones are real.</sub>
 
-## 6. Research, publications & talks
+## Research, publications & talks
 
 {chr(10).join(pubs)}
 
-## 7. Lab notebook
+## This week
 
-Every Monday a GitHub Action reads my public activity and has Claude write this entry. It is only published if every
-repository and number in it can be traced back to that activity.
+Every Monday a small AI agent reads what I pushed to GitHub and writes a short update here. A checker throws out
+anything it can't match to my real activity.
 
 {render_notebook(notebook, handle)}
 
 <details>
-<summary><b>How the agent works</b></summary>
+<summary><b>How it works</b></summary>
 
 {NOTEBOOK_DIAGRAM}
 
-- **Grounded by construction.** The model only sees the week's activity as JSON, and returns `headline`, `body` and
-  `repos` through structured output.
-- **Checked, not trusted.** [`scripts/lab_notebook.py`](scripts/lab_notebook.py) rejects any repo that wasn't touched
-  that week, any number not in the data, and any link. Violations are fed back for one repair round.
-- **Fails closed.** If the repair also fails, or there's no API key, a deterministic summary is published instead. A week
-  with no activity gets no entry.
-- **Tested.** [`tests/`](tests) runs on every build.
+- Claude only sees that week's activity and replies in a fixed format (a headline, a short update and the projects
+  it mentions).
+- [`scripts/lab_notebook.py`](scripts/lab_notebook.py) rejects any project I didn't touch that week, any number that
+  isn't in the data, and any link. Problems get sent back for one retry.
+- If the retry fails too, or there's no API key, a plain automatic summary is posted instead. Quiet weeks get no update.
+- [Tests](tests) run on every change.
 
 </details>
 
 ---
 
-<sub>Figures are SVGs generated by <a href="scripts/build.py"><code>scripts/build.py</code></a> from
-<a href="profile.toml"><code>profile.toml</code></a>: no third-party stats services. Refreshed weekly by
-<a href=".github/workflows/refresh.yml">GitHub Actions</a>.</sub>
+<sub>This page is generated from <a href="profile.toml"><code>profile.toml</code></a> by
+<a href="scripts/build.py"><code>scripts/build.py</code></a> and refreshed every Monday by
+<a href=".github/workflows/refresh.yml">GitHub Actions</a>. Charts are drawn in-house, with no third-party stats services.</sub>
 """
 
 
@@ -721,7 +710,7 @@ def site_data(profile: dict) -> dict:
     projects = [{
         "id": ids[p["name"]], "name": p["name"], "url": repo_url(handle, p["repo"]), "domain": p["domain"],
         "featured": bool(p.get("featured")), "question": p.get("question", ""), "method": p.get("method", ""),
-        "result": p.get("result") or p.get("summary", ""), "uses": p.get("uses", []),
+        "result": p.get("result") or p.get("summary", ""), "stack": p.get("stack", ""), "uses": p.get("uses", []),
     } for p in profile["projects"]]
 
     cps = profile["checkpoints"]

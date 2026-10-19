@@ -37,8 +37,8 @@ class BuildTest(unittest.TestCase):
     def test_readme_has_every_section(self):
         build.build(self.tmp)
         readme = (self.tmp / "README.md").read_text(encoding="utf-8")
-        for heading in ("## 1. Model card", "## 2. What I attend to", "## 3. Experiments", "## 4. Inductive biases",
-                        "## 5. Training run", "## 6. Research, publications & talks", "## 7. Lab notebook"):
+        for heading in ("## About me", "## Projects", "## What I work with", "## How I build AI tools",
+                        "## My learning curve", "## Research, publications & talks", "## This week"):
             self.assertIn(heading, readme)
 
     def test_notebook_entries_are_rendered_escaped(self):

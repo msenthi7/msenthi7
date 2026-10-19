@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>matheshwara-v2026 · Playground</title>
-<meta name="description" content="Interactive companion to github.com/msenthi7: sample the intro at any temperature, query the profile with in-browser retrieval, re-run the attention softmax and re-smooth the training curve.">
+<title>Matheshwara · Playground</title>
+<meta name="description" content="Interactive version of github.com/msenthi7: remix the intro, ask questions about the work, and play with the charts.">
 <style>
 :root {
   --bg: #ffffff; --panel: #f6f8fa; --border: #d0d7de; --faint: #eaeef2;
@@ -201,16 +201,16 @@ footer { margin: 72px 0 0; border-top: 1px solid var(--border); padding: 20px 0 
   <div class="panel" id="app-error" hidden>Couldn't load <code>profile.json</code>. If you opened this file directly, serve the folder over HTTP instead.</div>
 
   <section id="generate" aria-labelledby="h-generate">
-    <p class="eyebrow">01 · inference</p>
-    <h2 id="h-generate">Sample my introduction</h2>
-    <p class="lede">The same decoding as the README hero, but you hold the temperature. At T = 0 the top token always
-      wins; raise it and the runners-up start getting picked. Every candidate is true, so every sample is too.
-      Hover a <span style="color:var(--accent);font-weight:600">highlighted</span> token to see what it beat.</p>
+    <p class="eyebrow">01 · remix</p>
+    <h2 id="h-generate">Remix my intro</h2>
+    <p class="lede">This is the animated intro from my GitHub page, but you control the creativity dial. At 0 it always
+      picks the most likely word; turn it up and it starts choosing other options. Every option is true, so every
+      version is accurate. Hover a <span style="color:var(--accent);font-weight:600">highlighted</span> word to see what else it considered.</p>
     <div class="controls">
       <div id="prompts" class="controls" style="margin:0" role="group" aria-label="Prompts"></div>
     </div>
     <div class="controls">
-      <label class="slider">temperature <input id="temp" type="range" min="0" max="1.5" step="0.05" value="0.7"><output id="temp-out" for="temp">0.70</output></label>
+      <label class="slider">creativity <input id="temp" type="range" min="0" max="1.5" step="0.05" value="0.7"><output id="temp-out" for="temp">0.70</output></label>
       <button class="btn" id="regen" type="button">↻ Generate</button>
     </div>
     <div class="gen">
@@ -223,57 +223,58 @@ footer { margin: 72px 0 0; border-top: 1px solid var(--border); padding: 20px 0 
         </div>
       </div>
       <aside class="panel dist" aria-live="polite">
-        <h3 id="dist-title">next-token distribution</h3>
+        <h3 id="dist-title">options for the next word</h3>
         <div id="dist"></div>
-        <p>Probabilities are renormalised over the candidates as p<sup>1/T</sup>. Highlighted tokens with a tint were not the top choice.</p>
+        <p>Turning creativity up evens out these chances (ML calls this the <em>temperature</em>). Words with a tint weren't the top pick.</p>
       </aside>
     </div>
   </section>
 
   <section id="ask" class="ask" aria-labelledby="h-ask">
-    <p class="eyebrow">02 · retrieval</p>
-    <h2 id="h-ask">Ask my profile (retrieval only)</h2>
-    <p class="lede">Type a question. Your browser ranks every fact in my profile by TF-IDF cosine similarity and shows
-      the top three. This is the retrieval half of RAG: with no generator attached, it can't make anything up.</p>
+    <p class="eyebrow">02 · ask</p>
+    <h2 id="h-ask">Ask about my work</h2>
+    <p class="lede">Type a question and your browser picks the three most relevant facts from my profile. No AI writes
+      an answer here, so you only see what's actually in my profile. (It's the search half of a RAG chatbot.)</p>
     <form id="ask-form" role="search">
       <input id="ask-q" type="search" placeholder="e.g. which projects use Claude?" aria-label="Question" autocomplete="off">
-      <button class="btn" type="submit">Retrieve</button>
+      <button class="btn" type="submit">Search</button>
     </form>
     <div class="controls" style="margin-top:10px" id="ask-suggest" role="group" aria-label="Example questions"></div>
     <ol class="results" id="results" aria-live="polite"></ol>
   </section>
 
   <section id="attention" aria-labelledby="h-att">
-    <p class="eyebrow">03 · attention</p>
-    <h2 id="h-att">Re-run the attention softmax</h2>
-    <p class="lede">Rows are the domains I work in, columns the methods. Each cell is a softmax over how many of my
-      projects in that domain use that method. Drag τ to sharpen or flatten it; click a cell to see the projects behind the weight.</p>
+    <p class="eyebrow">03 · tools</p>
+    <h2 id="h-att">What I use, by area</h2>
+    <p class="lede">How often each kind of tool shows up in my projects, by area; each row adds up to 100%. Drag the
+      contrast to exaggerate or flatten the differences, and click a cell to see the projects behind it.</p>
     <div class="controls">
-      <label class="slider">τ (temperature) <input id="tau" type="range" min="0.2" max="3" step="0.05" value="1"><output id="tau-out" for="tau">1.00</output></label>
+      <label class="slider">contrast <input id="tau" type="range" min="0.3" max="3" step="0.05" value="1"><output id="tau-out" for="tau">1.0×</output></label>
     </div>
     <div class="panel att-wrap"><table class="att" id="att"></table></div>
     <div class="panel detail" id="att-detail" aria-live="polite"><p>Click any cell.</p></div>
   </section>
 
   <section id="training" aria-labelledby="h-train">
-    <p class="eyebrow">04 · training run</p>
-    <h2 id="h-train">Re-smooth my training run</h2>
-    <p class="lede">My path drawn as a loss curve and smoothed the way TensorBoard does it. Drag the EMA weight, hover for
-      values, click a checkpoint. The curve is illustrative; the checkpoints are real.</p>
+    <p class="eyebrow">04 · journey</p>
+    <h2 id="h-train">My learning curve</h2>
+    <p class="lede">Drawn like a machine-learning training chart: the line is roughly what I don't know yet, and it jumps
+      whenever I start something new. Drag the smoothing, hover for values and click a milestone. The curve is for fun,
+      but the milestones are real.</p>
     <div class="controls">
-      <label class="slider">EMA smoothing <input id="beta" type="range" min="0" max="0.98" step="0.01" value="0.9"><output id="beta-out" for="beta">0.90</output></label>
+      <label class="slider">smoothing <input id="beta" type="range" min="0" max="0.98" step="0.01" value="0.9"><output id="beta-out" for="beta">0.90</output></label>
     </div>
     <div class="panel chart" id="chart"><div class="tip" id="tip" hidden></div></div>
     <ol class="cps" id="cps"></ol>
   </section>
 
   <section id="experiments" aria-labelledby="h-exp">
-    <p class="eyebrow">05 · experiments</p>
-    <h2 id="h-exp">Filter the experiments</h2>
-    <p class="lede">Every project as a run with a question, a method and a result. Filter by domain or method; tags are clickable.</p>
+    <p class="eyebrow">05 · projects</p>
+    <h2 id="h-exp">Projects</h2>
+    <p class="lede">Filter by area or by the kind of tool used. Tags are clickable.</p>
     <div class="filters">
-      <div class="row" id="f-domain" role="group" aria-label="Filter by domain"><span>domain</span></div>
-      <div class="row" id="f-method" role="group" aria-label="Filter by method"><span>method</span></div>
+      <div class="row" id="f-domain" role="group" aria-label="Filter by area"><span>area</span></div>
+      <div class="row" id="f-method" role="group" aria-label="Filter by tool"><span>tools</span></div>
     </div>
     <p class="count" id="count"></p>
     <div class="cards" id="cards"></div>
@@ -291,7 +292,7 @@ const $ = (sel, root = document) => root.querySelector(sel);
 const NS = "http://www.w3.org/2000/svg";
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const fmt = x => x.toFixed(2).replace(/^0\./, ".");
+const pct = x => `${Math.round(100 * x)}%`;
 let DATA;
 
 function el(tag, props = {}, ...kids) {
@@ -342,11 +343,11 @@ function drawIndex(dist) {
   return dist.length - 1;
 }
 function showDist(slot, picked) {
-  $("#dist-title").textContent = `candidates · T = ${slot.T.toFixed(2)}`;
+  $("#dist-title").textContent = `options for this word · creativity ${slot.T.toFixed(2)}`;
   const box = $("#dist");
   box.replaceChildren(...slot.options.map(([word], i) =>
     el("div", { class: "dist-row" + (i === picked ? " picked" : "") },
-      el("span", { class: "w", text: word }), bar(slot.dist[i]), el("span", { text: fmt(slot.dist[i]) }))));
+      el("span", { class: "w", text: word }), bar(slot.dist[i]), el("span", { text: pct(slot.dist[i]) }))));
 }
 
 function promptLine(p) {
@@ -367,7 +368,7 @@ async function generate() {
     if (run !== gen.run) return;
     out.replaceChildren();
   }
-  let logp = 0, n = 0;
+  let n = 0;
   for (const tok of p.tokens) {
     if (run !== gen.run) return;
     n++;
@@ -381,12 +382,11 @@ async function generate() {
     if (!reduceMotion) await sleep(420);
     if (run !== gen.run) return;
     const i = drawIndex(slot.dist);
-    logp += Math.log(slot.dist[i]);
     showDist(slot, i);
     const lead = tok.text.match(/^\s*/)[0];
     const span = el("span", {
       class: "tok sampled" + (i ? " alt" : ""), tabindex: 0, text: tok.options[i][0],
-      "aria-label": `${tok.options[i][0]}, sampled with probability ${fmt(slot.dist[i])}`,
+      "aria-label": `${tok.options[i][0]}, picked with a ${pct(slot.dist[i])} chance`,
     });
     const show = () => showDist(slot, i);
     span.addEventListener("mouseenter", show);
@@ -395,8 +395,7 @@ async function generate() {
     if (!reduceMotion) await sleep(260);
   }
   out.append(el("span", { class: "cursor", "aria-hidden": "true" }));
-  stats.append(`▸ ${n} tokens · T ${gen.T.toFixed(2)} · log p = ${logp.toFixed(2)} · stop_reason: `,
-               el("span", { class: "ok", text: "end_turn" }));
+  stats.append(`▸ ${n} tokens · creativity ${gen.T.toFixed(2)} · `, el("span", { class: "ok", text: "done ✓" }));
 }
 
 function initGenerate() {
@@ -456,7 +455,7 @@ function retrieve(q) {
   list.replaceChildren();
   const qv = vectorize(terms(q));
   if (!qv.norm) {
-    list.append(el("li", { class: "empty", text: "None of those words appear in my profile, so there is nothing to retrieve. With no LLM attached, nothing gets made up." }));
+    list.append(el("li", { class: "empty", text: "None of those words appear in my profile, so there's nothing to show (and nothing gets made up)." }));
     return;
   }
   const scored = index.docs.map(d => {
@@ -465,7 +464,7 @@ function retrieve(q) {
     return { d, score: d.norm ? dot / (d.norm * qv.norm) : 0 };
   }).filter(s => s.score > 0).sort((a, b) => b.score - a.score).slice(0, 3);
   if (!scored.length) {
-    list.append(el("li", { class: "empty", text: "Nothing in my profile matches that. With no LLM attached, nothing gets made up." }));
+    list.append(el("li", { class: "empty", text: "Nothing in my profile matches that, and nothing gets made up." }));
     return;
   }
   const qset = new Set(qv.v.keys());
@@ -473,7 +472,7 @@ function retrieve(q) {
     const c = d.chunk;
     const src = c.url ? el("a", { href: c.url, text: c.source }) : el("span", { text: c.source });
     list.append(el("li", { class: "panel result" },
-      el("div", { class: "src" }, src, el("span", { class: "score" }, bar(score), `cos ${fmt(score)}`)),
+      el("div", { class: "src" }, src, el("span", { class: "score" }, bar(score), `match ${pct(score)}`)),
       highlighted(c.text, qset)));
   }
 }
@@ -488,7 +487,7 @@ function initAsk() {
 }
 
 /* ── 03 · attention ─────────────────────────────────────────────────────── */
-const att = { tau: 1, sel: null };
+const att = { contrast: 1, sel: null };
 function softmaxRows(counts, tau) {
   return counts.map(row => {
     const e = row.map(c => Math.exp(c / tau));
@@ -497,20 +496,20 @@ function softmaxRows(counts, tau) {
   });
 }
 function renderAttention() {
-  const A = DATA.attention, W = softmaxRows(A.counts, att.tau);
+  const A = DATA.attention, W = softmaxRows(A.counts, DATA.attention.temperature / att.contrast);
   const peak = Math.max(...W.flat());
   const table = $("#att");
   const head = el("thead", {}, el("tr", {}, el("th"), A.keys.map(([, label]) => el("th", { scope: "col" }, el("span", { text: label })))));
   const body = el("tbody");
   A.domains.forEach((domain, i) => {
     const best = Math.max(...W[i]);
-    const row = el("tr", {}, el("th", { scope: "row" }, el("b", { text: domain }), el("small", { text: `${A.runs[i]} runs` })));
+    const row = el("tr", {}, el("th", { scope: "row" }, el("b", { text: domain }), el("small", { text: `${A.runs[i]} projects` })));
     W[i].forEach((w, j) => {
       const level = Math.pow(w / peak, 0.75);
       const on = att.sel && att.sel[0] === i && att.sel[1] === j;
       const cell = el("button", {
-        type: "button", class: "cell" + (Math.abs(w - best) < 1e-9 ? " best" : ""), text: fmt(w),
-        "aria-pressed": String(!!on), "aria-label": `${domain} attends to ${A.keys[j][1]} with weight ${fmt(w)}`,
+        type: "button", class: "cell" + (Math.abs(w - best) < 1e-9 ? " best" : ""), text: pct(w),
+        "aria-pressed": String(!!on), "aria-label": `${domain}: ${A.keys[j][1]}, ${pct(w)}`,
         style: `background:color-mix(in srgb, var(--accent) ${Math.round(4 + 96 * level)}%, var(--faint));` +
                `color:${level > 0.55 ? "var(--on-accent)" : "var(--muted)"}`,
         onclick: () => { att.sel = [i, j]; renderAttention(); },
@@ -529,23 +528,20 @@ function renderAttDetail(W) {
   const domain = A.domains[i], [key, label] = A.keys[j];
   const names = A.evidence[`${i},${j}`] || [];
   const byName = new Map(DATA.projects.map(p => [p.name, p]));
-  const kids = [el("h3", { text: `${domain} × ${label} = ${fmt(W[i][j])}` })];
+  const kids = [el("h3", { text: `${domain} × ${label}: ${pct(W[i][j])}` })];
   if (names.length) {
-    kids.push(el("p", { text: `${names.length} of ${A.runs[i]} ${domain} runs use ${label}; that count, divided by τ, is this cell's logit.` }),
+    kids.push(el("p", { text: `Used in ${names.length} of my ${A.runs[i]} ${domain} projects:` }),
               el("ul", {}, names.map(n => el("li", {}, el("a", { href: byName.get(n).url, text: n }), ` · ${byName.get(n).id}`))));
   } else {
-    kids.push(el("p", { text: `No ${domain} run uses ${label}. Its weight comes only from the softmax's floor: e^(0/τ) = 1 in the numerator.` }));
+    kids.push(el("p", { text: `None of my ${domain} projects use this, so it only gets the small baseline share every cell starts with.` }));
   }
   kids.push(el("p", { style: "margin-top:8px" }, el("button", { type: "button", class: "linkish",
-    text: `Show these experiments ↓`, onclick: () => { ex.domain = domain; ex.method = key; renderExperiments(); $("#experiments").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }); } })));
+    text: `Show these projects ↓`, onclick: () => { ex.domain = domain; ex.method = key; renderExperiments(); $("#experiments").scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }); } })));
   box.replaceChildren(...kids);
 }
 function initAttention() {
-  att.tau = DATA.attention.temperature;
   const tau = $("#tau");
-  tau.value = att.tau;
-  $("#tau-out").textContent = att.tau.toFixed(2);
-  tau.addEventListener("input", () => { att.tau = +tau.value; $("#tau-out").textContent = att.tau.toFixed(2); renderAttention(); });
+  tau.addEventListener("input", () => { att.contrast = +tau.value; $("#tau-out").textContent = `${att.contrast.toFixed(1)}×`; renderAttention(); });
   renderAttention();
 }
 
@@ -569,7 +565,7 @@ function initTraining() {
   const path = vals => "M" + vals.map((v, i) => `${sx(t[i]).toFixed(1)} ${sy(v).toFixed(1)}`).join(" L");
   const nearest = x => { let b = 0; for (let i = 1; i < t.length; i++) if (Math.abs(t[i] - x) < Math.abs(t[b] - x)) b = i; return b; };
 
-  const s = svg("svg", { viewBox: `0 0 ${G.W} ${G.H}`, role: "img", "aria-label": "Training loss curve with checkpoints" });
+  const s = svg("svg", { viewBox: `0 0 ${G.W} ${G.H}`, role: "img", "aria-label": "Learning curve with milestones" });
   for (const v of [0.5, 1, 1.5]) {
     s.append(svg("line", { class: "grid", x1: G.X0, x2: G.X1, y1: sy(v), y2: sy(v) }));
     const lab = svg("text", { class: "tick", x: G.X0 - 8, y: sy(v) + 4, "text-anchor": "end" });
@@ -590,7 +586,7 @@ function initTraining() {
   s.append(curve, cross, dot, overlay);
 
   const groups = cps.map((cp, k) => {
-    const g = svg("g", { class: "cp", tabindex: 0, role: "button", "aria-label": `Checkpoint ${k + 1}: ${cp.date} ${cp.label}` });
+    const g = svg("g", { class: "cp", tabindex: 0, role: "button", "aria-label": `Milestone ${k + 1}: ${cp.date} ${cp.label}` });
     const c = svg("circle", { r: 9 });
     const n = svg("text");
     n.textContent = k + 1;
@@ -624,7 +620,7 @@ function initTraining() {
     cross.setAttribute("x1", px); cross.setAttribute("x2", px); cross.setAttribute("visibility", "visible");
     dot.setAttribute("cx", px); dot.setAttribute("cy", py); dot.setAttribute("visibility", "visible");
     tip.hidden = false;
-    tip.textContent = `${monthYear(t[i])} · loss ${smooth[i].toFixed(3)} (raw ${raw[i].toFixed(3)})`;
+    tip.textContent = `${monthYear(t[i])} · still to learn: ${smooth[i].toFixed(2)}`;
     // Position relative to the (horizontally scrollable) chart panel, kept inside it.
     const c = chart.getBoundingClientRect();
     const left = r.left - c.left + chart.scrollLeft + (px / G.W) * r.width;
@@ -667,12 +663,13 @@ function renderExperiments() {
   chipRow("#f-domain", DATA.attention.domains.map(d => [d, d]), ex.domain, v => { ex.domain = v; renderExperiments(); });
   chipRow("#f-method", DATA.attention.keys, ex.method, v => { ex.method = v; renderExperiments(); });
   const shown = DATA.projects.filter(p => (!ex.domain || p.domain === ex.domain) && (!ex.method || p.uses.includes(ex.method)));
-  $("#count").textContent = `Showing ${shown.length} of ${DATA.projects.length} runs`;
+  $("#count").textContent = `Showing ${shown.length} of ${DATA.projects.length} projects`;
   $("#cards").replaceChildren(...shown.map(p => el("article", { class: "panel card" },
-    el("header", {}, el("code", { text: p.id }), el("a", { href: p.url, text: p.name }), el("small", { text: `· ${p.domain}` })),
+    el("header", {}, el("a", { href: p.url, text: p.name }), el("small", { text: `· ${p.domain}` })),
     p.question ? el("p", { class: "q", text: p.question }) : null,
-    p.method ? el("p", { class: "m" }, el("b", { text: "METHOD " }), p.method) : null,
-    p.result ? el("p", { class: "m" }, el("b", { text: p.question ? "RESULT " : "SUMMARY " }), p.result) : null,
+    p.method ? el("p", { class: "m" }, el("b", { text: "HOW " }), p.method) : null,
+    p.result ? el("p", { class: "m" }, el("b", { text: p.question ? "RESULT " : "WHAT " }), p.result) : null,
+    p.stack ? el("p", { class: "m" }, el("b", { text: "BUILT WITH " }), p.stack) : null,
     el("div", { class: "tags" }, p.uses.map(u => el("button", { class: "chip", type: "button", text: labels.get(u),
       "aria-pressed": String(ex.method === u), onclick: () => { ex.method = u; renderExperiments(); } }))))));
 }
@@ -682,7 +679,7 @@ function initHeader() {
   const { identity: id, links } = DATA;
   document.title = `${id.model_id} · ${id.name}`;
   $("#name").textContent = id.name;
-  $("#model-id").textContent = `${id.model_id} · interactive model card`;
+  $("#model-id").textContent = "the interactive version of my GitHub profile";
   $("#abstract").innerHTML = DATA.abstract;  // built from profile.toml with HTML escaped
   $("#handle").textContent = id.handle;
   $("#lnk-github").href = links.github;

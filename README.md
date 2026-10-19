@@ -2,151 +2,146 @@
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.svg">
-  <img alt="A language model decodes an introduction to Matheshwara Annamalai Senthilkumar, token by token." src="assets/hero-light.svg" width="100%">
+  <img alt="An animated chat window types out an introduction to Matheshwara Annamalai Senthilkumar, word by word." src="assets/hero-light.svg" width="100%">
 </picture>
 
 <p align="center">
-<a href="https://www.linkedin.com/in/math-191231"><img alt="LinkedIn: math-191231" src="https://img.shields.io/badge/LinkedIn-math--191231-0A66C2?style=flat-square"></a> <a href="mailto:matheshwara13@gmail.com"><img alt="Email: say hi" src="https://img.shields.io/badge/Email-say%20hi-EA4335?style=flat-square&logo=gmail&logoColor=white"></a> <a href="https://ieeexplore.ieee.org/document/9569897"><img alt="IEEE: UCMMT 2021" src="https://img.shields.io/badge/IEEE-UCMMT%202021-00629B?style=flat-square&logo=ieee&logoColor=white"></a> <a href="https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"><img alt="Patent: 202241031906" src="https://img.shields.io/badge/Patent-202241031906-6e7781?style=flat-square"></a> <a href="#7-lab-notebook"><img alt="README: maintained by an LLM agent" src="https://img.shields.io/badge/README-maintained%20by%20an%20LLM%20agent-8250df?style=flat-square&logo=anthropic&logoColor=white"></a> <a href="https://msenthi7.github.io/msenthi7/"><img alt="Playground: interactive" src="https://img.shields.io/badge/Playground-interactive-1a7f37?style=flat-square"></a>
+<a href="https://www.linkedin.com/in/math-191231"><img alt="LinkedIn: math-191231" src="https://img.shields.io/badge/LinkedIn-math--191231-0A66C2?style=flat-square"></a> <a href="mailto:matheshwara13@gmail.com"><img alt="Email: say hi" src="https://img.shields.io/badge/Email-say%20hi-EA4335?style=flat-square&logo=gmail&logoColor=white"></a> <a href="https://ieeexplore.ieee.org/document/9569897"><img alt="IEEE: UCMMT 2021" src="https://img.shields.io/badge/IEEE-UCMMT%202021-00629B?style=flat-square&logo=ieee&logoColor=white"></a> <a href="https://github.com/msenthi7/Research-and-Publications/tree/main/Patent"><img alt="Patent: 202241031906" src="https://img.shields.io/badge/Patent-202241031906-6e7781?style=flat-square"></a> <a href="https://msenthi7.github.io/msenthi7/"><img alt="Playground: interactive" src="https://img.shields.io/badge/Playground-interactive-1a7f37?style=flat-square"></a> <a href="#this-week"><img alt="This page: updates itself weekly" src="https://img.shields.io/badge/This%20page-updates%20itself%20weekly-8250df?style=flat-square&logo=anthropic&logoColor=white"></a>
 </p>
 
-<p align="center">
-<b><a href="https://msenthi7.github.io/msenthi7/">▶ Open the interactive version</a></b>: sample this intro at any temperature, query my
-profile with in-browser retrieval, re-run the attention softmax and re-smooth the training curve.
-</p>
+I'm a machine learning engineer, working mostly on healthcare and finance. I started out in electronics (an IEEE paper and a patent), then moved into machine learning and data science at the University of Maryland, where I also worked as a data scientist at the Counseling Center Research Unit. Recently I built **ClinIQ**, a patient-triage assistant for small clinics, at the Anthropic Hackathon.
 
-> **Abstract.** We present *matheshwara-v2026*, a human model pre-trained on electronics and signals (one IEEE paper, one patent) and fine-tuned on machine learning at the University of Maryland. It specialises in **grounded LLM systems**: a clinical-triage assistant built at the Anthropic Hackathon, a stress-testing framework in which Claude reads Fed language to steer a stochastic rate model, and retrieval pipelines that keep patient data on the machine. As a data scientist at the UMD Counseling Center Research Unit, it co-authored a campus-wide study of food access and student well-being and an APA 2026 poster comparing ChatGPT with human researchers. This README is itself an experiment: an LLM agent writes its lab notebook every week, and a grounding check rejects anything it can't trace to real activity.
+<b><a href="https://msenthi7.github.io/msenthi7/">▶ Try the interactive version of this page</a></b>, where you can remix the intro and
+search my work.
 
-## 1. Model card
+## About me
 
-| **Model** | `matheshwara-v2026` |
+| **Name** | **Matheshwara Annamalai Senthilkumar** · `msenthi7` |
 |:--|:--|
-| **Pre-training** | Electronics & signals: an [IEEE UCMMT 2021 paper](https://ieeexplore.ieee.org/document/9569897) on D-band (160 GHz) traveling-wave-tube amplifiers and an [IoT patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent) |
-| **Fine-tuning** | Machine learning & data science at the University of Maryland |
-| **Deployment** | Data Scientist, [UMD Counseling Center Research Unit](https://counseling.umd.edu/about-us/research-unit): campus-wide survey research on food access and student well-being, presented to the Vice President of Student Affairs and at the [Maryland Student Affairs Conference](https://msac.umd.edu/conference-program/sessions) |
-| **Specialisation** | Grounded LLM systems: retrieval, tool-using agents, and LLMs as bounded signals inside quantitative models |
-| **Intended use** | AI that has to be right: healthcare, finance, safety |
-| **Out of scope** | Hallucinated medical advice. [ClinIQ](https://github.com/msenthi7/ClaudeHack) answers only from retrieved context |
-| **Eval highlights** | R² 0.918 on EV range · MAD 1.279 on book ratings · 1,000-path Monte Carlo VaR / CVaR |
-| **Known limitations** | Overfits to hard problems. Will refactor your notebook into a pipeline. |
-| **Status** | Open to ML / AI engineering roles and research collaborations |
+| **What I do** | Chatbots that answer from real documents, AI that uses tools, and machine learning for finance and healthcare |
+| **Background** | Electronics: an [IEEE paper](https://ieeexplore.ieee.org/document/9569897) on 160 GHz amplifiers for 5G and satellites, and a [patent](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent) for a child-safety wearable |
+| **Studied** | Machine learning & data science, University of Maryland |
+| **Worked** | Data Scientist, [UMD Counseling Center Research Unit](https://counseling.umd.edu/about-us/research-unit): a campus-wide survey on food access and student well-being, presented to UMD's Vice President of Student Affairs and at the [Maryland Student Affairs Conference](https://msac.umd.edu/conference-program/sessions) |
+| **Highlights** | [ClinIQ](https://github.com/msenthi7/ClaudeHack) at the Anthropic Hackathon · APA 2026 poster on ChatGPT vs human researchers · EV driving range predicted with R² = 0.918 |
+| **Known bug** | Overfits to hard problems. |
+| **Open to** | ML / AI engineering roles and research collaborations |
 
-## 2. What I attend to
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/attention-dark.svg">
-  <img alt="Attention heatmap: rows are the domains I work in, columns the methods I use, cells a softmax over my projects." src="assets/attention-light.svg" width="100%">
-</picture>
-
-<sub>Each cell is a row-wise softmax over how many of my projects in that domain use that method, computed by
-<code>scripts/build.py</code> from the tags in <code>profile.toml</code>. The dashed box is the query being processed.</sub>
-
-## 3. Experiments
+## Projects
 
 <table>
 <tr>
 <td width="50%" valign="top">
-<code>exp-11</code> <b><a href="https://github.com/msenthi7/ClaudeHack">ClinIQ</a></b> <sub>· Clinical AI</sub><br>
-<i>Can a local LLM help an under-resourced clinic triage patients without inventing medical facts?</i><br>
-<sub><b>METHOD</b> Transparent rule-based severity score → llama3.1 (Ollama) clinical and plain-language summaries → strict RAG over ChromaDB (Gale Encyclopedia + openFDA labels) → 3-step prescription-safety check</sub><br>
-<sub><b>RESULT</b> Built for the Anthropic Hackathon (Health &amp; Wellbeing). Chat answers only from retrieved chunks; AI features disable themselves if the knowledge base is missing</sub><br>
-<sub><code>Retrieval / RAG · Local LLMs · Guardrails · Agents / MCP · Data pipelines</code></sub>
+<b><a href="https://github.com/msenthi7/ClaudeHack">ClinIQ</a></b> <sub>· Healthcare AI</sub><br>
+<i>Helps doctors at under-resourced clinics decide which patients to see first.</i><br>
+<sub><b>How</b> Ranks patients with a simple, transparent point score. A local AI model then writes a summary for the doctor and a plain-language one for the patient, answering only from a medical encyclopedia and FDA drug labels. A three-step check flags unsafe prescriptions.</sub><br>
+<sub><b>Result</b> Built at the Anthropic Hackathon (Health &amp; Wellbeing track). If the medical knowledge base is missing, the AI features turn off.</sub><br>
+<sub><b>Built with</b> Python · Llama 3.1 (Ollama) · ChromaDB · Streamlit · Pydantic</sub>
 </td>
 <td width="50%" valign="top">
-<code>exp-09</code> <b><a href="https://github.com/msenthi7/Quant_LLM">Sentimental Liquidity</a></b> <sub>· Quant finance</sub><br>
-<i>Can central-bank language move a stochastic rate model without letting the LLM become the model?</i><br>
-<sub><b>METHOD</b> Claude scores FOMC text for hawkishness (1–10) → bounded multiplier on the Vasicek mean-reversion speed → 1,000 Monte Carlo rate paths → logistic deposit-attrition model on 100k synthetic customers</sub><br>
-<sub><b>RESULT</b> Net-interest-margin distribution with 90 / 95 / 99 % VaR and CVaR on a synthetic $10B deposit book</sub><br>
-<sub><code>LLM APIs · Stochastic sim · Classical ML · Guardrails</code></sub>
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-<code>exp-10</code> <b><a href="https://github.com/msenthi7/TravelGenie">TravelGenie</a></b> <sub>· Agentic tools</sub><br>
-<i>Can one model coordinate many specialist tools to plan a whole trip from a single request?</i><br>
-<sub><b>METHOD</b> Claude orchestrates 7 MCP servers (flights, hotels, events, geocoding, weather, FX, traffic) behind Streamlit and Slack front ends</sub><br>
-<sub><b>RESULT</b> One prompt → day-by-day itinerary with a budget breakdown (team project)</sub><br>
-<sub><code>Agents / MCP · LLM APIs · Data pipelines</code></sub>
-</td>
-<td width="50%" valign="top">
-<code>exp-06</code> <b><a href="https://github.com/msenthi7/RAG_using_Mistral_ChromaDB">Local Medical RAG</a></b> <sub>· Clinical AI</sub><br>
-<i>Can a medical Q&amp;A bot be useful while patient data never leaves the machine?</i><br>
-<sub><b>METHOD</b> Ollama + Chroma + HuggingFace embeddings; intent routing for off-topic queries, a retrieval relevance threshold, stateful follow-ups; Dockerised</sub><br>
-<sub><b>RESULT</b> Fully local pipeline: no third-party calls for protected health information</sub><br>
-<sub><code>Retrieval / RAG · Local LLMs · Guardrails · MLOps / cloud</code></sub>
+<b><a href="https://github.com/msenthi7/Quant_LLM">Sentimental Liquidity</a></b> <sub>· Finance</sub><br>
+<i>Uses the tone of Federal Reserve statements to improve a bank&#x27;s interest-rate risk model.</i><br>
+<sub><b>How</b> Claude rates each Fed statement from dovish to hawkish (1–10). That one number nudges a standard interest-rate model, which simulates 1,000 possible futures; a second model estimates how many depositors would leave in each.</sub><br>
+<sub><b>Result</b> A Value-at-Risk report for a simulated $10B bank. The AI provides one score, and everything else is standard math.</sub><br>
+<sub><b>Built with</b> Python · Claude API · NumPy · SciPy · scikit-learn</sub>
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
-<code>exp-07</code> <b><a href="https://github.com/msenthi7/Medical-Chatbot-using-LLMs-Langchain-Pinecone-Flask-and-AWS">Medical Chatbot on AWS</a></b> <sub>· Clinical AI</sub><br>
-<i>What does it take to run a RAG chatbot in production, not just in a notebook?</i><br>
-<sub><b>METHOD</b> LangChain + Pinecone + GPT behind Flask; Docker image built by GitHub Actions, pushed to ECR and deployed to EC2</sub><br>
-<sub><b>RESULT</b> Commit-to-container CI/CD path with conversation memory and LangSmith monitoring hooks</sub><br>
-<sub><code>Retrieval / RAG · LLM APIs · MLOps / cloud</code></sub>
+<b><a href="https://github.com/msenthi7/TravelGenie">TravelGenie</a></b> <sub>· Automation</sub><br>
+<i>Plans a whole trip from one request.</i><br>
+<sub><b>How</b> Claude coordinates seven small tools (flights, hotels, events, maps, weather, currency, traffic), with a web app and a Slack bot on top.</sub><br>
+<sub><b>Result</b> One request becomes a day-by-day itinerary with a budget. Team project.</sub><br>
+<sub><b>Built with</b> Python · Claude API · MCP · Streamlit · Slack</sub>
 </td>
 <td width="50%" valign="top">
-<code>exp-08</code> <b><a href="https://github.com/msenthi7/Predicting-EV-Trends-and-Charging-Needs">Watt&#x27;s Next?</a></b> <sub>· Applied ML</sub><br>
-<i>How far will the next EV go, and where should the chargers go?</i><br>
-<sub><b>METHOD</b> 216,772 Washington-state EV records: range regression, SMOTE-balanced incentive classification, clustering and geospatial analysis (co-authored)</sub><br>
-<sub><b>RESULT</b> R² = 0.918 on electric-range prediction</sub><br>
-<sub><code>Classical ML · Data pipelines</code></sub>
+<b><a href="https://github.com/msenthi7/RAG_using_Mistral_ChromaDB">Private Medical Chatbot</a></b> <sub>· Healthcare AI</sub><br>
+<i>A medical Q&amp;A chatbot that keeps patient data on your own computer.</i><br>
+<sub><b>How</b> An open-source AI model runs on the local machine. It searches medical PDFs before answering, declines off-topic questions and skips weak matches.</sub><br>
+<sub><b>Result</b> No patient information is sent to any outside service.</sub><br>
+<sub><b>Built with</b> Python · Ollama · ChromaDB · Hugging Face · Flask · Docker</sub>
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
-<code>exp-04</code> <b><a href="https://github.com/msenthi7/Item-Item-Collaborative-Filterning">Item-Item Collaborative Filtering</a></b> <sub>· Applied ML</sub><br>
-<i>How many neighbours does a book recommender actually need?</i><br>
-<sub><b>METHOD</b> Cosine-similarity KNN on a sparse item × user matrix, sweeping neighbourhood size and training ratio, global-mean cold-start fallback</sub><br>
-<sub><b>RESULT</b> Best MAD 1.279 at k = 15; ratio sweep peaks at 0.85</sub><br>
-<sub><code>Classical ML</code></sub>
+<b><a href="https://github.com/msenthi7/Medical-Chatbot-using-LLMs-Langchain-Pinecone-Flask-and-AWS">Medical Chatbot on AWS</a></b> <sub>· Healthcare AI</sub><br>
+<i>Takes a medical chatbot from a notebook to a live website.</i><br>
+<sub><b>How</b> A chatbot that answers medical questions from a document database, packaged with Docker and redeployed to AWS automatically on every code change.</sub><br>
+<sub><b>Result</b> Each code push goes live on AWS automatically. The bot remembers the conversation and is monitored.</sub><br>
+<sub><b>Built with</b> Python · LangChain · Pinecone · OpenAI · Flask · Docker · AWS · GitHub Actions</sub>
 </td>
 <td width="50%" valign="top">
-<code>exp-12</code> <b><a href="https://github.com/msenthi7/msenthi7">This profile</a></b> <sub>· Agentic tools</sub><br>
-<i>Can an LLM agent keep this README current without hallucinating?</i><br>
-<sub><b>METHOD</b> Weekly GitHub Action: public activity → Claude (structured JSON) → grounding check on every repo name and number → one repair round → deterministic fallback</sub><br>
-<sub><b>RESULT</b> Every published entry is traceable to the week&#x27;s activity; figures are rendered from this repo&#x27;s profile.toml</sub><br>
-<sub><code>LLM APIs · Agents / MCP · Guardrails · MLOps / cloud</code></sub>
+<b><a href="https://github.com/msenthi7/Predicting-EV-Trends-and-Charging-Needs">Watt&#x27;s Next?</a></b> <sub>· Data science</sub><br>
+<i>Predicts how far electric cars will go and where new chargers are needed.</i><br>
+<sub><b>How</b> Analysed 216,772 electric-vehicle records from Washington State with regression, classification, clustering and maps (with a co-author).</sub><br>
+<sub><b>Result</b> Predicted electric driving range with R² = 0.918.</sub><br>
+<sub><b>Built with</b> Python · scikit-learn · pandas · GeoPandas · Folium</sub>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<b><a href="https://github.com/msenthi7/Item-Item-Collaborative-Filterning">Book Recommender</a></b> <sub>· Data science</sub><br>
+<i>Recommends books similar to ones a reader already liked.</i><br>
+<sub><b>How</b> Finds books that readers rated in similar ways, then tests how many look-alike books to compare.</sub><br>
+<sub><b>Result</b> Most accurate when comparing 15 similar books (average error of 1.28 rating points).</sub><br>
+<sub><b>Built with</b> Python · scikit-learn · SciPy · pandas</sub>
+</td>
+<td width="50%" valign="top">
+<b><a href="https://github.com/msenthi7/msenthi7">This profile</a></b> <sub>· Automation</sub><br>
+<i>Uses AI to keep this page up to date, with checks so it can&#x27;t make things up.</i><br>
+<sub><b>How</b> Every Monday a GitHub Action collects my public activity and Claude writes a short update. Code checks every project name and number against the real data; if anything doesn&#x27;t match, it gets one retry, then a plain automatic summary.</sub><br>
+<sub><b>Result</b> Every weekly update can be traced back to real activity.</sub><br>
+<sub><b>Built with</b> Python · Claude API · GitHub Actions</sub>
 </td>
 </tr>
 </table>
 
 <details>
-<summary><b>4 more runs</b> (data engineering, statistics, scrapers)</summary>
+<summary><b>4 more projects</b></summary>
 
-- `exp-05` [Bitcoin streaming](https://github.com/msenthi7/BITCOIN_ANALYSIS_USING_STREAMZ): Reactive price ingestion with Streamz; CoinGecko primary, CryptoCompare fallback, exponential backoff
-- `exp-03` [Life-expectancy modelling](https://github.com/msenthi7/LifeExpectancy-Analysis): Interaction-term regression on Gapminder with an F-test and residual diagnostics
-- `exp-02` [Solar Flare Reporter](https://github.com/msenthi7/Solar-Flare-Reporter): Selenium scraper and analysis of NASA's top-50 solar flares
-- `exp-01` [Webpdf Scraper](https://github.com/msenthi7/Webpdf-Scraper): Crawls a site and extracts every linked PDF and PPT document
+- [Bitcoin price tracker](https://github.com/msenthi7/BITCOIN_ANALYSIS_USING_STREAMZ): Live price feed that switches to a backup data source when the main one is rate-limited
+- [Life-expectancy analysis](https://github.com/msenthi7/LifeExpectancy-Analysis): Statistics on how life expectancy changes over time across continents
+- [Solar Flare Reporter](https://github.com/msenthi7/Solar-Flare-Reporter): Web scraper and analysis of NASA's top 50 solar flares
+- [Webpdf Scraper](https://github.com/msenthi7/Webpdf-Scraper): Collects every PDF and slide deck linked from a website
 
 </details>
 
-## 4. Inductive biases
+## What I work with
 
-The priors I bring to every AI system, each with the repo where it's applied.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/attention-dark.svg">
+  <img alt="Heatmap of which kinds of tools I use in each area of my work, counted from my projects." src="assets/attention-light.svg" width="100%">
+</picture>
 
-| Prior | In practice | Evidence |
+<sub>If you speak ML: each row is a softmax, so this is basically my attention map.</sub>
+
+## How I build AI tools
+
+A few rules I follow, and where you can see each one.
+
+| Rule | What it looks like | See it in |
 |:--|:--|:--|
-| **Ground, then generate** | Retrieve first and answer only from what was retrieved. ClinIQ's system prompt forbids outside knowledge for medical answers. | [`ClaudeHack`](https://github.com/msenthi7/ClaudeHack) |
-| **The LLM is a sensor, not the model** | Claude returns one bounded score from Fed language; it shifts the Vasicek mean-reversion speed by −40 % to +50 %, and the SDE, Monte Carlo and VaR stay deterministic and auditable. | [`Quant_LLM`](https://github.com/msenthi7/Quant_LLM) |
-| **Deterministic core, generative surface** | Patients are ranked by a transparent point-based severity score; the LLM writes the summaries, never the ranking. | [`ClaudeHack`](https://github.com/msenthi7/ClaudeHack) |
-| **Fail closed** | Every structured LLM call is parsed with fallback defaults; this profile's agent retries once, then falls back to a summary it can't get wrong. | [`msenthi7`](https://github.com/msenthi7/msenthi7) |
-| **Sensitive data stays local** | Medical Q&A runs on Ollama + Chroma on the machine, so protected health information never reaches a third party. | [`RAG_using_Mistral_ChromaDB`](https://github.com/msenthi7/RAG_using_Mistral_ChromaDB) |
-| **Specialists over a monolith** | One orchestrating model, seven MCP servers, each owning exactly one job. | [`TravelGenie`](https://github.com/msenthi7/TravelGenie) |
+| **Answer from sources** | My chatbots search real documents first and answer only from what they find. ClinIQ is told never to use outside knowledge for medical answers. | [`ClaudeHack`](https://github.com/msenthi7/ClaudeHack) |
+| **Limit what the AI controls** | In my finance model, Claude contributes one number on a 1–10 scale. Everything else is standard math that can be checked. | [`Quant_LLM`](https://github.com/msenthi7/Quant_LLM) |
+| **Keep important decisions simple** | ClinIQ ranks patients with a point score anyone can audit; the AI only writes the summaries. | [`ClaudeHack`](https://github.com/msenthi7/ClaudeHack) |
+| **Fall back safely** | If an AI answer can't be read or checked, the system uses a safe default instead. This page's weekly update works this way. | [`msenthi7`](https://github.com/msenthi7/msenthi7) |
+| **Keep private data local** | Medical questions are answered on the local computer, so patient data never goes to an outside service. | [`RAG_using_Mistral_ChromaDB`](https://github.com/msenthi7/RAG_using_Mistral_ChromaDB) |
+| **One tool per job** | TravelGenie gives each task (flights, weather, currency…) its own small tool, coordinated by one AI. | [`TravelGenie`](https://github.com/msenthi7/TravelGenie) |
 
-## 5. Training run
+## My learning curve
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/training-dark.svg">
-  <img alt="My path drawn as a training-loss curve, with checkpoints from an IEEE paper and a patent to LLM systems." src="assets/training-light.svg" width="100%">
+  <img alt="My path from electronics to machine learning, drawn as a curve that drops as I learn and jumps when I start something new." src="assets/training-light.svg" width="100%">
 </picture>
 
-<sub>Loss spikes at each distribution shift (a new field) and recovers faster every time. The curve is illustrative;
-the checkpoints are real.</sub>
+<sub>Drawn the way ML people plot training. The line is roughly what I don't know yet, and it jumps whenever I take on
+something new. The curve is for fun, but the milestones are real.</sub>
 
-## 6. Research, publications & talks
+## Research, publications & talks
 
 - **Paper** · [Preliminary Analysis of a Folded Waveguide Slow-Wave Structure for 160GHz Traveling Wave Tube Amplifier](https://ieeexplore.ieee.org/document/9569897)  
   Surya Prasath C, Ipsit Ray, J Sneka, **A.S. Matheshwara**, Richards Joe Stanislaus · 2021 14th UK-Europe-China Workshop on Millimetre-Waves and Terahertz Technologies (UCMMT), Lancaster, UK, pp. 1–3 · DOI [10.1109/UCMMT53364.2021.9569897](https://doi.org/10.1109/UCMMT53364.2021.9569897)  
-  <sub>Dispersion analysis of a D-band folded-waveguide slow-wave structure: a 20 GHz operating band (155–175 GHz) at an RF phase velocity of 0.244c, for 5G backhaul and inter-satellite links.</sub>
+  <sub>Design analysis of an amplifier component for 155–175 GHz signals, aimed at 5G networks and satellite-to-satellite links.</sub>
 - **Poster** · *A study of artificial intelligence usage by ChatGPT and human researchers*  
   Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Mellacheruvu, M., & Maki, A. · American Psychological Association Annual Meeting, Washington, DC, August 2026
 - **Report** · *The University of Maryland Food Access & Student Well-being Study: 2025 campus survey*  
@@ -156,7 +151,7 @@ the checkpoints are real.</sub>
   Wang, Y.-W., Bello, J. M., Watkins, B., Wachowski, C., & **Annamalai Senthilkumar, M.** · Maryland Student Affairs Conference, University of Maryland, College Park, February 2026
 - **Patent** · [Smart Wearable Device for Toddlers](https://github.com/msenthi7/Research-and-Publications/tree/main/Patent)  
   **Matheshwara**, Yogeshwar G · Patent No. 202241031906  
-  <sub>Flex-sensor / Velostat wearable that detects abnormal physical contact and alerts guardians in real time through a Blynk cloud app.</sub>
+  <sub>A wearable with a touch sensor that alerts parents on their phone if it detects abnormal physical contact.</sub>
 
 **Presentations** <sub>Wang, Y.-W., Wachowski, C., **Annamalai Senthilkumar, M.**, Kurz, A., & Maki, A.</sub>
 
@@ -182,39 +177,38 @@ the checkpoints are real.</sub>
 
 </details>
 
-## 7. Lab notebook
+## This week
 
-Every Monday a GitHub Action reads my public activity and has Claude write this entry. It is only published if every
-repository and number in it can be traced back to that activity.
+Every Monday a small AI agent reads what I pushed to GitHub and writes a short update here. A checker throws out
+anything it can't match to my real activity.
 
-_No entries yet. The agent writes one each Monday after a week with public activity._
+_Nothing yet: an update appears the Monday after a week with new public commits._
 
 <details>
-<summary><b>How the agent works</b></summary>
+<summary><b>How it works</b></summary>
 
 ```mermaid
 flowchart LR
-    A[Public GitHub activity<br/>past 7 days] --> B[Claude<br/>structured JSON entry]
-    B --> C{Grounding check<br/>repos and numbers}
-    C -- pass --> E[README]
-    C -- fail --> D[Repair round<br/>violations fed back]
+    A[My public GitHub activity<br/>last 7 days] --> B[Claude writes<br/>a short update]
+    B --> C{Do the names and<br/>numbers match?}
+    C -- yes --> E[This page]
+    C -- no --> D[One retry, with<br/>the problems listed]
     D --> B
-    D -. fails again .-> F[Deterministic summary]
+    D -. still wrong .-> F[Plain automatic summary]
     F --> E
 ```
 
-- **Grounded by construction.** The model only sees the week's activity as JSON, and returns `headline`, `body` and
-  `repos` through structured output.
-- **Checked, not trusted.** [`scripts/lab_notebook.py`](scripts/lab_notebook.py) rejects any repo that wasn't touched
-  that week, any number not in the data, and any link. Violations are fed back for one repair round.
-- **Fails closed.** If the repair also fails, or there's no API key, a deterministic summary is published instead. A week
-  with no activity gets no entry.
-- **Tested.** [`tests/`](tests) runs on every build.
+- Claude only sees that week's activity and replies in a fixed format (a headline, a short update and the projects
+  it mentions).
+- [`scripts/lab_notebook.py`](scripts/lab_notebook.py) rejects any project I didn't touch that week, any number that
+  isn't in the data, and any link. Problems get sent back for one retry.
+- If the retry fails too, or there's no API key, a plain automatic summary is posted instead. Quiet weeks get no update.
+- [Tests](tests) run on every change.
 
 </details>
 
 ---
 
-<sub>Figures are SVGs generated by <a href="scripts/build.py"><code>scripts/build.py</code></a> from
-<a href="profile.toml"><code>profile.toml</code></a>: no third-party stats services. Refreshed weekly by
-<a href=".github/workflows/refresh.yml">GitHub Actions</a>.</sub>
+<sub>This page is generated from <a href="profile.toml"><code>profile.toml</code></a> by
+<a href="scripts/build.py"><code>scripts/build.py</code></a> and refreshed every Monday by
+<a href=".github/workflows/refresh.yml">GitHub Actions</a>. Charts are drawn in-house, with no third-party stats services.</sub>
