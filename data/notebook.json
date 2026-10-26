@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "week": "2026-W44",
+    "date": "2026-10-26",
+    "headline": "Reading week: 2 repos starred",
+    "body": "Starred YunSolutions/levin-openData, LucianPopaLP/ECUPrint.",
+    "repos": [
+      "YunSolutions/levin-openData",
+      "LucianPopaLP/ECUPrint"
+    ],
+    "writer": "deterministic",
+    "attempts": 0
+  }
+]
