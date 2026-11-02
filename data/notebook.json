@@ -1,5 +1,17 @@
 [
   {
+    "week": "2026-W45",
+    "date": "2026-11-02",
+    "headline": "2 commits across 1 repo",
+    "body": "Pushed to TravelGenie-AI (2). Starred rtora/munorai.",
+    "repos": [
+      "TravelGenie-AI",
+      "rtora/munorai"
+    ],
+    "writer": "deterministic",
+    "attempts": 0
+  },
+  {
     "week": "2026-W44",
     "date": "2026-10-26",
     "headline": "Reading week: 2 repos starred",
