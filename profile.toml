@@ -62,6 +62,68 @@ rows = [
   ["Open to",         "ML / AI engineering roles and research collaborations"],
 ]
 
+# ── Tech stack badges ────────────────────────────────────────────────────────
+# One row per group. Each item is [name, simple-icons logo slug ("" for none),
+# hex colour]. Only list tools that appear in a public repo or on the résumé.
+[[stack]]
+group = "Languages"
+items = [
+  ["Python",  "python",     "3776AB"],
+  ["SQL",     "postgresql", "336791"],
+  ["C",       "c",          "A8B9CC"],
+  ["C++",     "cplusplus",  "00599C"],
+  ["Bash",    "gnubash",    "4EAA25"],
+  ["MATLAB",  "",           "E16737"],
+]
+
+[[stack]]
+group = "AI & LLMs"
+items = [
+  ["Claude API",   "anthropic",             "191919"],
+  ["MCP",          "modelcontextprotocol",  "191919"],
+  ["OpenAI",       "",                "412991"],
+  ["LangChain",    "langchain",             "1C3C3C"],
+  ["Ollama",       "ollama",                "000000"],
+  ["Hugging Face", "huggingface",           "FFD21E"],
+  ["ChromaDB",     "",                      "FF6446"],
+  ["Pinecone",     "",                      "000000"],
+]
+
+[[stack]]
+group = "Data & ML"
+items = [
+  ["pandas",       "pandas",       "150458"],
+  ["NumPy",        "numpy",        "013243"],
+  ["SciPy",        "scipy",        "8CAAE6"],
+  ["scikit-learn", "scikitlearn",  "F7931E"],
+  ["XGBoost",      "",             "189FDD"],
+  ["GeoPandas",    "",             "139C5A"],
+  ["Jupyter",      "jupyter",      "F37626"],
+  ["PostgreSQL",   "postgresql",   "4169E1"],
+  ["DuckDB",       "duckdb",       "FFF000"],
+  ["SQLite",       "sqlite",       "003B57"],
+]
+
+[[stack]]
+group = "Apps & APIs"
+items = [
+  ["Flask",     "flask",     "000000"],
+  ["Streamlit", "streamlit", "FF4B4B"],
+  ["Pydantic",  "pydantic",  "E92063"],
+  ["Slack API", "",     "4A154B"],
+]
+
+[[stack]]
+group = "Cloud & DevOps"
+items = [
+  ["AWS",            "", "232F3E"],
+  ["Lambda",         "",         "FF9900"],
+  ["DynamoDB",       "",    "4053D6"],
+  ["Docker",         "docker",            "2496ED"],
+  ["GitHub Actions", "githubactions",     "2088FF"],
+  ["Linux",          "linux",             "FCC624"],
+]
+
 # ── "What I work with" heatmap ───────────────────────────────────────────────
 # Rows are areas, columns are kinds of tools. Each cell is computed from the
 # `uses` tags on the projects below (a softmax per row, so rows add to 100%).

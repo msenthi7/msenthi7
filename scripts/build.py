@@ -19,6 +19,7 @@ import tomllib
 from dataclasses import dataclass
 from html import escape
 from pathlib import Path
+from urllib.parse import quote
 
 MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', 'DejaVu Sans Mono', monospace"
 SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif"
@@ -490,6 +491,27 @@ def badge(label: str, message: str, colour: str, href: str, logo: str = "") -> s
     return f'<a href="{href}"><img alt="{escape(label)}: {escape(message)}" src="{src}"></a>'
 
 
+def render_stack(profile: dict) -> str:
+    """Tech-stack badges, one table row per group (shields.io for-the-badge)."""
+    def enc(s: str) -> str:
+        return quote(s.replace("-", "--").replace("_", "__"), safe="")
+
+    def light(hex_: str) -> bool:
+        r, g, b = (int(hex_[i:i + 2], 16) for i in (0, 2, 4))
+        return 0.299 * r + 0.587 * g + 0.114 * b > 160
+
+    rows = ["| Area | Tools |", "|:--|:--|"]
+    for group in profile.get("stack", []):
+        badges = []
+        for name, logo, colour in group["items"]:
+            fg = "000000" if light(colour) else "ffffff"
+            logo_q = f"&logo={logo}&logoColor={fg}" if logo else ""
+            src = f"https://img.shields.io/badge/{enc(name)}-{colour}?style=for-the-badge{logo_q}"
+            badges.append(f'<img alt="{escape(name)}" src="{src}">')
+        rows.append(f"| **{group['group']}** | {' '.join(badges)} |")
+    return "\n".join(rows)
+
+
 def repo_url(handle: str, repo: str) -> str:
     return f"https://github.com/{repo}" if "/" in repo else f"https://github.com/{handle}/{repo}"
 
@@ -600,6 +622,10 @@ search my work.
 ## About me
 
 {chr(10).join(card)}
+
+## Tech stack
+
+{render_stack(profile)}
 
 ## Projects
 

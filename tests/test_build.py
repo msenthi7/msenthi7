@@ -37,7 +37,7 @@ class BuildTest(unittest.TestCase):
     def test_readme_has_every_section(self):
         build.build(self.tmp)
         readme = (self.tmp / "README.md").read_text(encoding="utf-8")
-        for heading in ("## About me", "## Projects", "## What I work with", "## How I build AI tools",
+        for heading in ("## About me", "## Tech stack", "## Projects", "## What I work with", "## How I build AI tools",
                         "## My learning curve", "## Research, publications & talks", "## This week"):
             self.assertIn(heading, readme)
 
